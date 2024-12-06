@@ -29,7 +29,7 @@ twilio_client = Client(account_sid, auth_token)
 ASSISTANT_ID = "asst_lUGfhLsfL4TvgPQrR1kVZkjh"
 
 from openai import OpenAI
-openAI_key = os.getenv('OPENAI_KEY')
+openAI_key = os.getenv('OPENAI_API')
 client = OpenAI(api_key=openAI_key)
 
 @app.route('/whatsapp', methods=['POST'])
