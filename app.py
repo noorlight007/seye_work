@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-
+import re
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -70,6 +70,8 @@ def handle_incoming_message():
         time.sleep(0.5)
 
     print(final_response)
+    # Remtion references
+    final_response = re.sub(r'【\d+:\d+†source】', '', final_response)
     if len(final_response)>1600:
         partA = final_response[:1400]
         partB = final_response[1400:]
