@@ -58,4 +58,4 @@ def create_record(property_name, property_type, property_status, property_price,
 
     print(f"\nNew record has updated. Property name: {property_name}")
 
-create_record("Kimia residences", "Villa", "En construction", "À partir de 160 Millions FCFA", "https://sabluximmobilier.com/programmes/residences-kimia/", "Résidences secondaires")
+# create_record("Kimia residences", "Villa", "En construction", "À partir de 160 Millions FCFA", "https://sabluximmobilier.com/programmes/residences-kimia/", "Résidences secondaires")
