@@ -2,7 +2,7 @@ from mongoengine import *
 from datetime import datetime
 
 # Connection url with Mongodb database
-connect(host = "mongodb://127.0.0.1:27017/seye?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.1.1") #This is a local database, that's why the string looks like this.
+connect(host = "mongodb://127.0.0.1:27017/seye?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.3.7") #This is a local database, that's why the string looks like this.
 
 class Property(Document):
     id = SequenceField(primary_key = True)
