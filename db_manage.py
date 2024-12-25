@@ -41,3 +41,21 @@ def create_new_property(property_name, property_type, property_status, property_
         create_new_record.save()
     
         print(f"\nNew record has updated. Property name: {property_name}")
+
+
+def create_record(property_name, property_type, property_status, property_price, property_link, project_type):
+    create_new_record = Property(
+        property_name = property_name,
+        property_type = property_type,
+        property_status = property_status,
+        property_price = property_price,
+        property_link = property_link,
+        project_type = project_type,
+        created_at = datetime.now(),
+        updated_at = datetime.now()
+    )
+    create_new_record.save()
+
+    print(f"\nNew record has updated. Property name: {property_name}")
+
+create_record("Kimia residences", "Villa", "En construction", "À partir de 160 Millions FCFA", "https://sabluximmobilier.com/programmes/residences-kimia/", "Résidences secondaires")
