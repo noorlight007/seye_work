@@ -20,7 +20,7 @@ senegal_links= ["https://sabluximmobilier.com/?advanced_contystate=senegal&filte
                 "https://sabluximmobilier.com/?advanced_contystate=senegal&filter_search_action%5B%5D=villa&property_status=&submit=Recherche&elementor_form_id=18618",
                 "https://sabluximmobilier.com/page/2/?advanced_contystate=senegal&filter_search_action%5B0%5D=villa&property_status&submit=Recherche&elementor_form_id=18618"]
 
-def scrape_sablux_properties(url):
+def scrape_sablux_properties():
     # Set up headless Selenium WebDriver
     # Set up headless Selenium WebDriver
     chrome_options = Options()
@@ -31,48 +31,45 @@ def scrape_sablux_properties(url):
 
     service = Service("/usr/local/bin/chromedriver")  # Update this to your chromedriver path
     driver = webdriver.Chrome(service=service, options=chrome_options)
+    for url in senegal_links:
+        # Open the webpage
+        driver.get(url)
 
-    # Open the webpage
-    driver.get(url)
+        # Wait for the content to load
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.ID, "listing_ajax_container"))
+        )
 
-    # Wait for the content to load
-    WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.ID, "listing_ajax_container"))
-    )
+        # Get page source and close the driver
+        page_source = driver.page_source
+        driver.quit()
 
-    # Get page source and close the driver
-    page_source = driver.page_source
-    driver.quit()
+        # Parse with BeautifulSoup
+        soup = BeautifulSoup(page_source, "html.parser")
+        listings = soup.find("div", {"id": "listing_ajax_container"}).find_all("div", class_="property_listing")
 
-    # Parse with BeautifulSoup
-    soup = BeautifulSoup(page_source, "html.parser")
-    listings = soup.find("div", {"id": "listing_ajax_container"}).find_all("div", class_="property_listing")
+        # Extract property details
+        for listing in listings:
+            # Extract price
+            price_span = listing.find("div", class_="listing_unit_price_wrapper")
+            price = price_span.text.strip() if price_span else "N/A"
 
-    # Extract property details
-    properties = []
-    for listing in listings:
-        # Extract price
-        price_span = listing.find("div", class_="listing_unit_price_wrapper")
-        price = price_span.text.strip() if price_span else "N/A"
+            # Extract property link
+            property_link = listing.get("data-link", "N/A")
 
-        # Extract property link
-        property_link = listing.get("data-link", "N/A")
+            # Extract property type
+            property_type_div = listing.find("div", class_="action_tag_wrapper")
+            property_type = property_type_div.text.strip() if property_type_div else "N/A"
 
-        # Extract property type
-        property_type_div = listing.find("div", class_="action_tag_wrapper")
-        property_type = property_type_div.text.strip() if property_type_div else "N/A"
+            # Extract property status
+            property_status_div = listing.find("div", class_="ribbon-inside")
+            property_status = property_status_div.text.strip() if property_status_div else "N/A"
 
-        # Extract property status
-        property_status_div = listing.find("div", class_="ribbon-inside")
-        property_status = property_status_div.text.strip() if property_status_div else "N/A"
-
-        # Extract property name
-        property_name_tag = listing.find("h4").find("a")
-        property_name = property_name_tag.text.strip() if property_name_tag else "N/A"
+            # Extract property name
+            property_name_tag = listing.find("h4").find("a")
+            property_name = property_name_tag.text.strip() if property_name_tag else "N/A"
 
 
-        create_new_property(property_name, property_type, property_status, price, property_link)
+            create_new_property(property_name, property_type, property_status, price, property_link)
 
-# Example Usage
-url = "https://sabluximmobilier.com/?advanced_contystate=senegal&filter_search_action%5B0%5D=appartements&property_status=&submit=Recherche&elementor_form_id=18618"
-scrape_sablux_properties(url)
+scrape_sablux_properties()
