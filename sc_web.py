@@ -65,6 +65,7 @@ def scrape_sablux_properties():
 
             # Extract property link
             property_link = listing.get("data-link", "N/A")
+            
 
             # Extract property type
             property_type_div = listing.find("div", class_="action_tag_wrapper")
@@ -78,8 +79,28 @@ def scrape_sablux_properties():
             property_name_tag = listing.find("h4").find("a")
             property_name = property_name_tag.text.strip() if property_name_tag else "N/A"
 
+            ###  ********  ###
+            driver_new = webdriver.Chrome(service=service, options=chrome_options)
+            # Open the webpage
+            driver_new.get(property_link)
 
+            # Wait for the content to load
+            WebDriverWait(driver_new, 10).until(
+                EC.presence_of_element_located((By.CLASS_NAME, "panel panel-default"))
+            )
+
+            # Extract property type
+            exact_location_div = listing.find("div", class_="property_categs")
+            exact_location = exact_location_div.text.strip() if exact_location_div else "N/A"
+            print(exact_location)
+
+            # Closing the driver
+            driver_new.close()
+            ###  *********  ###
             create_new_property(property_name, property_type, property_status, price, property_link, project_type)
+        
+        # Closing the driver
+        driver.close()
         time.sleep(5)
 
 scrape_sablux_properties()
