@@ -81,6 +81,7 @@ def scrape_sablux_properties():
 
             ###  ********  ###
             driver_new = webdriver.Chrome(service=service, options=chrome_options)
+            print(f"Getting content of {property_link}")
             # Open the webpage
             driver_new.get(property_link)
 
