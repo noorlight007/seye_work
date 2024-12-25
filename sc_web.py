@@ -85,7 +85,7 @@ def scrape_sablux_properties():
             driver_new.get(property_link)
 
             # Wait for the content to load
-            WebDriverWait(driver_new, 10).until(
+            WebDriverWait(driver_new, 30).until(
                 EC.presence_of_element_located((By.CLASS_NAME, "panel panel-default"))
             )
 
