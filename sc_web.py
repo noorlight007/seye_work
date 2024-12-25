@@ -119,7 +119,7 @@ def scrape_sablux_properties():
 
             # Extract amenities
             amenities_div = soup_new.find("div", class_="listing_detail col-md-12 feature_block_others")
-            all_amenities = amenities_div.find_all("div", class_="listing_detail col-md-6")
+            all_amenities = amenities_div.find_all("div")
             list_amenities = []
             for item in all_amenities:
                 list_amenities.append(item.text.strip())
