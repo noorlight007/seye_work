@@ -23,7 +23,7 @@ class Property(Document):
     updated_at = DateTimeField()
 
 
-def create_new_property(property_name, property_type, property_status, property_price, property_link, project_type):
+def create_new_property(property_name, property_type, property_status, property_price, property_link, project_type, exact_location, description):
     check_existing = Property.objects(property_name = property_name).first()
     if check_existing:
         print(f"\nAlready existed property = {property_name}")
@@ -35,6 +35,8 @@ def create_new_property(property_name, property_type, property_status, property_
             property_price = property_price,
             property_link = property_link,
             project_type = project_type,
+            exact_location = exact_location,
+            description = description,
             created_at = datetime.now(),
             updated_at = datetime.now()
         )
