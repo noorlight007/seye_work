@@ -86,8 +86,8 @@ def scrape_sablux_properties():
             driver_new.get(property_link)
 
             # Wait for the content to load
-            WebDriverWait(driver_new, 30).until(
-                EC.presence_of_element_located((By.ID, "wpestate_single_agent_details_wrapper"))
+            WebDriverWait(driver_new, 15).until(
+                EC.presence_of_element_located((By.ID, "prop_ame"))
             )
             time.sleep(5)
             # Get page source and close the driver
