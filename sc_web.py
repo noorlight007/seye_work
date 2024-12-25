@@ -155,7 +155,7 @@ def scrape_sablux_properties():
             print(f"Property ID: {property_id}\nDate of Launch: {date_of_launch}\nLand Size: {land_size}\nNumber of Villas: {number_of_villas}\nNumber of Apartments = {number_of_apartments}\nLot size = {lot_size}\nCountry = {country}\nDescription = {description}")
             property_details = {"Property ID": property_id, "Date of launch": date_of_launch, "Land Size": land_size, "Number of Villas": number_of_villas,
                                 "Number of Apartments": number_of_apartments, "Property Lot Size": lot_size}
-            print(list_amenities)
+            print(list_amenities[1:])
             # Extract Number
             ###  *********  ###
             #create_new_property(property_name, property_type, property_status, price, property_link, project_type, country, exact_location, description,property_details)
