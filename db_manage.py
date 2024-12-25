@@ -25,7 +25,7 @@ class Property(Document):
 def create_new_property(property_name, property_type, property_status, property_price, property_link):
     check_existing = Property.objects(property_name = property_name).first()
     if check_existing:
-        print(f"Already existed property = {property_name}")
+        print(f"\nAlready existed property = {property_name}")
     else:
         create_new_record = Property(
             property_name = property_name,
@@ -38,4 +38,4 @@ def create_new_property(property_name, property_type, property_status, property_
         )
         create_new_record.save()
     
-    print(f"\nNew record has updated. Property name: {property_name}")
+        print(f"\nNew record has updated. Property name: {property_name}")
