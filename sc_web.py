@@ -95,11 +95,53 @@ def scrape_sablux_properties():
             driver_new.quit()
             # Parse with BeautifulSoup
             soup_new = BeautifulSoup(page_source_new, "html.parser")
+
             # Extract property type 
             exact_location_div = soup_new.find("div", class_="property_categs")
             exact_location = exact_location_div.text.strip() if exact_location_div else "N/A"
             print(exact_location)
 
+            # Extract description
+            # Find the parent <div> by class or ID
+            description_div = soup_new.find("div", class_="wpestate_property_description")
+
+            # Extract all <p> elements within the <div>
+            p_tags = description_div.find_all("p")
+            description = ""
+            # Iterate through each <p> and print its text
+            for idx, p in enumerate(p_tags, 1):
+                print(f"Paragraph {idx}: {p.text.strip()}")
+                description+= f"{p.text.strip()}\n"
+
+            # Extract Property details
+            property_id_div = soup_new.find("div", id="propertyid_display")
+            property_id = property_id_div.text.strip().split(":")[-1].strip() if property_id_div else "N/A"
+
+            # Extract date of lunch
+            dol_div = soup_new.find("div", class_="listing_detail col-md-6 property-year")
+            date_of_launch = dol_div.text.strip().split(":")[-1].strip() if dol_div else "N/A"
+
+            # Extract land size
+            ls_div = soup_new.find("div", class_="listing_detail col-md-6 terrains")
+            land_size = ls_div.text.strip().split(":")[-1].strip() if ls_div else "N/A"
+
+            # Extract lot size
+            lot_size_div = soup_new.find("div", class_="listing_detail col-md-6 property_default_lot_size")
+
+            lot_size = lot_size_div.text.strip().split(":")[-1].strip() if lot_size_div else "N/A"
+            lot_size = lot_size.replace("ha", "hectare")
+
+            # Extract number of villas
+            nv_div = soup_new.find("div", class_="listing_detail col-md-6 villas")
+            number_of_villas = nv_div.text.strip().split(":")[-1].strip().split(" ")[0].strip() if nv_div else "N/A"
+
+            # Extract number of Apartments
+            apartment_div = soup_new.find("div", class_="listing_detail col-md-6 apartment")
+            number_of_apartments = apartment_div.text.strip().split(":")[-1].strip() if apartment_div else "N/A"
+
+            print(f"Property ID: {property_id}\nDate of Launch: {date_of_launch}\nLand Size: {land_size}\nNumber of Villas: {number_of_villas}\nNumber of Apartments = {number_of_apartments}\nLot size = {lot_size}")
+
+            # Extract Number
             ###  *********  ###
             create_new_property(property_name, property_type, property_status, price, property_link, project_type)
         
