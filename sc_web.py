@@ -11,7 +11,7 @@ from bs4 import BeautifulSoup
 
 from db_manage import create_new_property
 
-from imp_list import return_total_list
+from imp_list import return_total_list, return_luxury_list
 
 def scrape_sablux_properties():
 
@@ -23,8 +23,9 @@ def scrape_sablux_properties():
     chrome_options.add_argument("--disable-dev-shm-usage")  # Disable /dev/shm usage for large pages
 
     total_url_list = return_total_list()
+    luxury_list = return_luxury_list()
     ## under_const Properties
-    for url in total_url_list:
+    for url in luxury_list:
         project_type = ""
         if "haut-de-gamme" in url:
             project_type = "Haut de gamme"

@@ -8,8 +8,9 @@ top_project_list = ["https://sabluximmobilier.com/categorie/haut-de-gamme/",
 economic_list = ["https://sabluximmobilier.com/categorie/villas-economiques/"]
 
 foncier_list = ["https://sabluximmobilier.com/categorie/foncier/"]
-
-luxuary_list = ["https://sabluximmobilier.com/categorie/luxe/"]
+def return_luxury_list():
+    luxuary_list = ["https://sabluximmobilier.com/categorie/luxe/"]
+    return luxuary_list
 
 secondary_list = ["https://sabluximmobilier.com/categorie/residences-secondaires/"]
 
