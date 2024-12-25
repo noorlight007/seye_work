@@ -22,13 +22,14 @@ senegal_links= ["https://sabluximmobilier.com/?advanced_contystate=senegal&filte
 
 def scrape_sablux_properties(url):
     # Set up headless Selenium WebDriver
+    # Set up headless Selenium WebDriver
     chrome_options = Options()
-    chrome_options.add_argument("--headless")
-    chrome_options.add_argument("--disable-gpu")
-    chrome_options.add_argument("--no-sandbox")
-    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--headless")  # Run in headless mode (no UI)
+    chrome_options.add_argument("--disable-gpu")  # Disable GPU usage
+    chrome_options.add_argument("--no-sandbox")  # Run in sandbox mode
+    chrome_options.add_argument("--disable-dev-shm-usage")  # Disable /dev/shm usage for large pages
 
-    service = Service("/usr/local/bin/chromedriver")
+    service = Service("/usr/local/bin/chromedriver")  # Update this to your chromedriver path
     driver = webdriver.Chrome(service=service, options=chrome_options)
 
     # Open the webpage
