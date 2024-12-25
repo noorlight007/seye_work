@@ -18,6 +18,7 @@ class Property(Document):
     floor_plan = DictField()  # Structure: {"planName": "Appt A","pic_url": "https://...."}
     amenities = ListField(StringField())  # Structure: ["a", "b"]
     property_link = StringField()
+    project_type = StringField()  # Example: top_of_the range, economic_villa
     created_at = DateTimeField()
     updated_at = DateTimeField()
 
