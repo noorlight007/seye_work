@@ -122,7 +122,9 @@ def scrape_sablux_properties():
             all_amenities = amenities_div.find_all("div")
             list_amenities = []
             for item in all_amenities:
-                list_amenities.append(item.text.strip())
+                it = item.text.strip()
+                f_it = it.replace("movie-recorderCreated with Sketch Beta.   ", "")
+                list_amenities.append(f_it)
 
             # Extract Property details
             property_id_div = soup_new.find("div", id="propertyid_display")
