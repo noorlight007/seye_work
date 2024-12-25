@@ -1,4 +1,5 @@
 import requests
+import time
 
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -29,9 +30,10 @@ def scrape_sablux_properties():
     chrome_options.add_argument("--no-sandbox")  # Run in sandbox mode
     chrome_options.add_argument("--disable-dev-shm-usage")  # Disable /dev/shm usage for large pages
 
-    service = Service("/usr/local/bin/chromedriver")  # Update this to your chromedriver path
-    driver = webdriver.Chrome(service=service, options=chrome_options)
+    
     for url in senegal_links:
+        service = Service("/usr/local/bin/chromedriver")  # Update this to your chromedriver path
+        driver = webdriver.Chrome(service=service, options=chrome_options)
         # Open the webpage
         driver.get(url)
 
@@ -71,5 +73,6 @@ def scrape_sablux_properties():
 
 
             create_new_property(property_name, property_type, property_status, price, property_link)
+        time.sleep(5)
 
 scrape_sablux_properties()
