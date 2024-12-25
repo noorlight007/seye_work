@@ -110,7 +110,6 @@ def scrape_sablux_properties():
             description = ""
             # Iterate through each <p> and print its text
             for idx, p in enumerate(p_tags, 1):
-                print(f"Paragraph {idx}: {p.text.strip()}")
                 description+= f"{p.text.strip()}\n"
 
             # Extract Property details
@@ -139,7 +138,7 @@ def scrape_sablux_properties():
             apartment_div = soup_new.find("div", class_="listing_detail col-md-6 apartment")
             number_of_apartments = apartment_div.text.strip().split(":")[-1].strip() if apartment_div else "N/A"
 
-            print(f"Property ID: {property_id}\nDate of Launch: {date_of_launch}\nLand Size: {land_size}\nNumber of Villas: {number_of_villas}\nNumber of Apartments = {number_of_apartments}\nLot size = {lot_size}")
+            print(f"Property ID: {property_id}\nDate of Launch: {date_of_launch}\nLand Size: {land_size}\nNumber of Villas: {number_of_villas}\nNumber of Apartments = {number_of_apartments}\nLot size = {lot_size}\nDescription = {description}")
 
             # Extract Number
             ###  *********  ###
