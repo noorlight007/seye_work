@@ -25,6 +25,19 @@ def scrape_sablux_properties():
     total_url_list = return_total_list()
     ## under_const Properties
     for url in total_url_list:
+        project_type = ""
+        if "haut-de-gamme" in url:
+            project_type = "Haut de gamme"
+        elif "villas-economiques" in url:
+            project_type = "Villas économiques"
+        elif "foncier" in url:
+            project_type = "Foncier"
+        elif "luxe" in url:
+            project_type = "Luxe"
+        elif "residences-secondaires" in url:
+            project_type = "Résidences secondaires"
+        elif "professionnel" in url:
+            project_type = "Professionnel"
         service = Service("/usr/local/bin/chromedriver")  # Update this to your chromedriver path
         driver = webdriver.Chrome(service=service, options=chrome_options)
         # Open the webpage
@@ -65,7 +78,7 @@ def scrape_sablux_properties():
             property_name = property_name_tag.text.strip() if property_name_tag else "N/A"
 
 
-            create_new_property(property_name, property_type, property_status, price, property_link)
+            create_new_property(property_name, property_type, property_status, price, property_link, project_type)
         time.sleep(5)
 
 scrape_sablux_properties()
