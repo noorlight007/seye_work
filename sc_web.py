@@ -117,6 +117,13 @@ def scrape_sablux_properties():
             country_div = info_div.find_all("li")[5]
             country = country_div.text.strip()
 
+            # Extract amenities
+            amenities_div = soup_new.find("div", class_="listing_detail col-md-12 feature_block_others")
+            all_amenities = amenities_div.find_all("div", class_="listing_detail col-md-6")
+            list_amenities = []
+            for item in all_amenities:
+                list_amenities.append(item.text.strip())
+
             # Extract Property details
             property_id_div = soup_new.find("div", id="propertyid_display")
             property_id = property_id_div.text.strip().split(":")[-1].strip() if property_id_div else "N/A"
@@ -144,10 +151,12 @@ def scrape_sablux_properties():
             number_of_apartments = apartment_div.text.strip().split(":")[-1].strip() if apartment_div else "N/A"
 
             print(f"Property ID: {property_id}\nDate of Launch: {date_of_launch}\nLand Size: {land_size}\nNumber of Villas: {number_of_villas}\nNumber of Apartments = {number_of_apartments}\nLot size = {lot_size}\nCountry = {country}\nDescription = {description}")
-
+            property_details = {"Property ID": property_id, "Date of launch": date_of_launch, "Land Size": land_size, "Number of Villas": number_of_villas,
+                                "Number of Apartments": number_of_apartments, "Property Lot Size": lot_size}
+            print(list_amenities)
             # Extract Number
             ###  *********  ###
-            # create_new_property(property_name, property_type, property_status, price, property_link, project_type, exact_location, description)
+            #create_new_property(property_name, property_type, property_status, price, property_link, project_type, country, exact_location, description,property_details)
         
         
         time.sleep(5)
