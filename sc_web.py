@@ -11,7 +11,7 @@ from bs4 import BeautifulSoup
 
 from db_manage import create_new_property
 
-import imp_list
+from imp_list import return_total_list
 
 def scrape_sablux_properties():
 
@@ -22,8 +22,9 @@ def scrape_sablux_properties():
     chrome_options.add_argument("--no-sandbox")  # Run in sandbox mode
     chrome_options.add_argument("--disable-dev-shm-usage")  # Disable /dev/shm usage for large pages
 
+    total_url_list = return_total_list()
     ## under_const Properties
-    for url in imp_list.total_list:
+    for url in total_url_list:
         service = Service("/usr/local/bin/chromedriver")  # Update this to your chromedriver path
         driver = webdriver.Chrome(service=service, options=chrome_options)
         # Open the webpage
