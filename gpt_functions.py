@@ -38,6 +38,20 @@ def create_assistant(assistant_name, my_instruction):
                 "function": {
                     "name": "check_which_country",
                     "description": "Whenever a customer sends first message in a thread, you will run this function to get the customer's country name",
+                    "parameters": {
+                        "properties": {
+                            "country_find": {
+                                "description": "Alawys returns True when executing this function.",
+                                "title": "country_find",
+                                "type": "boolean"
+                            }
+
+                        },
+                        "required": [
+                            "country_find"
+                        ],
+                        "type": "object"
+                    }
                 }
             }
         ],
