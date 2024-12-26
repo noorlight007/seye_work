@@ -14,7 +14,6 @@ class Property(Document):
     exact_location = StringField()
     description = StringField()
     property_details = DictField()  # Example: {"property_id": ""}
-    addess_of_ownership = DictField()  # Example: {"Address": "",,}
     amenities = ListField(StringField())  # Structure: ["a", "b"]
     property_link = StringField()
     project_type = StringField()  # Example: top_of_the range, economic_villa
@@ -22,7 +21,7 @@ class Property(Document):
     updated_at = DateTimeField()
 
 
-def create_new_property(property_name, property_type, property_status, property_price, property_link, project_type, country_place, exact_location, description, property_details):
+def create_new_property(property_name, property_type, property_status, property_price, property_link, project_type, country_place, exact_location, description, property_details, amenities):
     check_existing = Property.objects(property_name = property_name).first()
     if check_existing:
         print(f"\nAlready existed property = {property_name}")
@@ -38,6 +37,7 @@ def create_new_property(property_name, property_type, property_status, property_
             exact_location = exact_location,
             description = description,
             property_details = property_details,
+            amenities = amenities,
             created_at = datetime.now(),
             updated_at = datetime.now()
         )
