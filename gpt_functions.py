@@ -29,7 +29,7 @@ def create_assistant(assistant_name, my_instruction):
     client = OpenAI(api_key=openAI_key)
     my_assistant = client.beta.assistants.create(
         name = assistant_name,
-        description= "Virtual assistant of Sablux Holding company, a real state development company. You will act like a sale representative of this builders company, answer to the customers queries and suggest properties like a pro.",
+        description= "Virtual assistant of Sablux Holding company of a real state development company, your name is Anna. You will act like a sale representative of this builders company, answer to the customers queries and suggest properties like a pro.",
         instructions = my_instruction,
         model="gpt-4o",
         tools=[{"type": "file_search"},

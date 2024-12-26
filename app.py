@@ -32,7 +32,7 @@ auth_token = os.getenv('AUTH_TOKEN')
 phone_number = os.getenv('PHONE_NUMBER')
 twilio_client = Client(account_sid, auth_token)
 
-ASSISTANT_ID = "asst_I2qyGzLxN1jjHhTZS925Ka9Q"
+ASSISTANT_ID = "asst_adBYCIdWKBI4LWgYJ6MMWzCI"
 
 from openai import OpenAI
 openAI_key = os.getenv('OPENAI_API')
