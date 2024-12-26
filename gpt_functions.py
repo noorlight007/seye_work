@@ -53,7 +53,27 @@ def create_assistant(assistant_name, my_instruction):
                         "type": "object"
                     }
                 }
-            }
+            },
+            {
+                "type": "function",
+                "function": {
+                    "name": "get_property_by_name",
+                    "description": "Get a whole property info, details and other info by a property name. A customer will ask you about a property with a name. You will confirm the name with another message if this is the property name the customer is looking for. If they confirm, you will execute this function.",
+                    "parameters": {
+                        "properties": {
+                            "property_name": {
+                                "description": "The specific property name the customer is looking for",
+                                "title": "Property Name",
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "property_name"
+                        ],
+                        "type": "object"
+                    }
+                }
+            },
         ],
 	)
     return my_assistant.id

@@ -47,7 +47,7 @@ def create_new_property(property_name, property_type, property_status, property_
 # create_record("Kimia residences", "Villa", "En construction", "À partir de 160 Millions FCFA", "https://sabluximmobilier.com/programmes/residences-kimia/", "Résidences secondaires")
 
 def get_property_by_name(property_name):
-    property = Property.objects(property_name = property_name).first()
+    property = Property.objects(property_name__icontains = property_name).first()
     result = {"Property Name": property.property_name, "Property Type": property.property_type, "Property Status": property.property_status,
               "Property Price": property.property_price, "Property Website link": property.property_link, "Country Place": property.country_place,
               "Property Address": property.exact_location, "Description": property.description, "Detail info":property.property_details,
