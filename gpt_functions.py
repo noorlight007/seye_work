@@ -94,6 +94,38 @@ def create_assistant(assistant_name, my_instruction):
                     }
                 }
             },
+            {
+                "type": "function",
+                "function": {
+                    "name": "contact_admin",
+                    "description": "By executing this function, the company admin will be notified about the customer's inquiry.",
+                    "parameters": {
+                        "properties": {
+                            "customer_name": {
+                                "description": "The fullname of the customer",
+                                "title": "Fullname of Customer",
+                                "type": "string"
+                            },
+                            "phone_number": {
+                                "description": "The phone number of the customer",
+                                "title": "Phone number of Customer",
+                                "type": "string"
+                            },
+                            "email": {
+                                "description": "The email address of the customer",
+                                "title": "Email address of Customer",
+                                "type": "string"
+                            },
+                        },
+                        "required": [
+                            "customer_name",
+                            "phone_number",
+                            "email"
+                        ],
+                        "type": "object"
+                    }
+                }
+            }
         ],
 	)
     return my_assistant.id

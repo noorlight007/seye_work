@@ -30,9 +30,10 @@ openAI_key = os.getenv('OPENAI_API')
 account_sid = os.getenv('ACCOUNT_SID')
 auth_token = os.getenv('AUTH_TOKEN')
 phone_number = os.getenv('PHONE_NUMBER')
+messaging_sid = os.getenv('MESSAGING_SID')
 twilio_client = Client(account_sid, auth_token)
 
-ASSISTANT_ID = "asst_adBYCIdWKBI4LWgYJ6MMWzCI"
+ASSISTANT_ID = "asst_wf5E4FS1JJZtyYsQiy0lYw6G"
 
 from openai import OpenAI
 openAI_key = os.getenv('OPENAI_API')
@@ -119,6 +120,25 @@ def handle_incoming_message():
                             "tool_call_id": tool_call.id,
                             "output": json.dumps({"all_properties_data":all_properties_data}),
                         }
+                    tools_outputs.append(tool_output)
+
+                if tool_call.function.name == "contact_admin":
+                    fullname = arguments['customer_name']
+                    cell_number = arguments['phone_number']
+                    email = arguments['email']
+                    twilio_client.messages.create(
+                        from_= messaging_sid,
+                        content_sid= "HX5df8d742b509e3cc10b187191c202a41",
+                        content_variables= json.dumps({"1": fullname,
+                                                       "2": cell_number,
+                                                       "3": email}),
+                        to= "whatsapp:+8801301807991"  
+                    )
+                    tool_output={
+                            "tool_call_id": tool_call.id,
+                            "output": json.dumps({"inquiry_sent":True}),
+                        }
+                    tools_outputs.append(tool_output)
 
 
             run = openai_client.beta.threads.runs.submit_tool_outputs(
