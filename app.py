@@ -44,7 +44,7 @@ def handle_incoming_message():
     sender = request.form.get('From')
     profile_name = request.form.get('ProfileName')
     media_url = request.form.get('MediaUrl0')
-
+    print(message)
     
     openai_client = OpenAI(api_key=openAI_key)
 
