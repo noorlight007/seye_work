@@ -32,7 +32,8 @@ twilio_client = Client(account_sid, auth_token)
 
 ASSISTANT_ID = "asst_zFx2EBwqfNFVhzLMgGQGrRZI"
 
-
+from openai import OpenAI
+openAI_key = os.getenv('OPENAI_API')
 
 @app.route('/whatsapp', methods=['POST'])
 def handle_incoming_message():
@@ -41,37 +42,13 @@ def handle_incoming_message():
     profile_name = request.form.get('ProfileName')
     media_url = request.form.get('MediaUrl0')
 
-    from openai import OpenAI
-    openAI_key = os.getenv('OPENAI_API')
+    
     openai_client = OpenAI(api_key=openAI_key)
 
-    if 'thread_id' not in session:
-        thread_id = initiate_interaction(message)
-        session['thread_id'] = thread_id
-    else:
-        thread_id = session.get('thread_id')
-        sendNewMessage_to_existing_thread(thread_id, message)
-
-    run = trigger_assistant(thread_id, ASSISTANT_ID)
-    final_response = "No message"
-    while True:
-        run_status = checkRunStatus(thread_id , run.id)
-        print(f"Run status: {run_status.status}")
-        queue_time = 1
-        if run_status.status == "failed":
-            final_response = "Sorry I am having issues generating responses for queries now. Please wait for me to fix it."
-            session.pop('thread_id', None)
-            break
-        if run_status.status == "queued":
-            if queue_time == 10:
-                final_response = "Sorry I am having issues generating responses for queries now. Please wait for me to fix it."
-                session.pop('thread_id', None)
-                break
-            queue_time+= 1
-        # Initializing final response
+    # Initializing final response
     final_response = None
     # del request.session[unique_id]
-    if "openai_" not in session:
+    if "client" not in session:
         my_thread_id = initiate_interaction(message)
         session["client"] = my_thread_id
     else:
@@ -126,7 +103,7 @@ def handle_incoming_message():
             
         elif run_status.status == "completed":
             # Extract the bot's response
-            final_response = retrieveResponse(thread_id)
+            final_response = retrieveResponse(my_thread_id)
             print(final_response)
             break
 
