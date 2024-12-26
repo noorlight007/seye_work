@@ -74,7 +74,7 @@ def handle_incoming_message():
         session["client"] = my_thread_id
     else:
         
-        my_thread_id = request.session.get("client")
+        my_thread_id = session.get("client")
         sendNewMessage_to_existing_thread(my_thread_id, message)
 
     run = trigger_assistant(my_thread_id, ASSISTANT_ID)
@@ -87,13 +87,13 @@ def handle_incoming_message():
         if run_status.status == "failed":
             final_response = "Sorry I am having issues generating responses for queries now. Please wait for me to fix it."
             break
-        if run_status.status == "queued":
+        elif run_status.status == "queued":
             if queue_time == 15:
                 session.clear()
                 final_response = "Sorry I am having issues generating responses for queries now. Please wait for me to fix it."
                 break
             queue_time+= 1
-        if run_status.status == "requires_action":
+        elif run_status.status == "requires_action":
             # List to store all the call ids
             tools_outputs = []
 
@@ -122,7 +122,7 @@ def handle_incoming_message():
                 )
 
             
-        if run_status.status == "completed":
+        elif run_status.status == "completed":
             # Extract the bot's response
             final_response = retrieveResponse(thread_id)
             break
