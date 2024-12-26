@@ -30,7 +30,7 @@ auth_token = os.getenv('AUTH_TOKEN')
 phone_number = os.getenv('PHONE_NUMBER')
 twilio_client = Client(account_sid, auth_token)
 
-ASSISTANT_ID = "asst_lUGfhLsfL4TvgPQrR1kVZkjh"
+ASSISTANT_ID = "asst_8a574viRc23tJt53fv1QVCNo"
 
 from openai import OpenAI
 openAI_key = os.getenv('OPENAI_API')
@@ -125,6 +125,7 @@ def handle_incoming_message():
         elif run_status.status == "completed":
             # Extract the bot's response
             final_response = retrieveResponse(thread_id)
+            print(final_response)
             break
 
         time.sleep(1)
