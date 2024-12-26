@@ -32,9 +32,7 @@ twilio_client = Client(account_sid, auth_token)
 
 ASSISTANT_ID = "asst_zFx2EBwqfNFVhzLMgGQGrRZI"
 
-from openai import OpenAI
-openAI_key = os.getenv('OPENAI_API')
-client = OpenAI(api_key=openAI_key)
+
 
 @app.route('/whatsapp', methods=['POST'])
 def handle_incoming_message():
@@ -42,6 +40,10 @@ def handle_incoming_message():
     sender = request.form.get('From')
     profile_name = request.form.get('ProfileName')
     media_url = request.form.get('MediaUrl0')
+
+    from openai import OpenAI
+    openAI_key = os.getenv('OPENAI_API')
+    openai_client = OpenAI(api_key=openAI_key)
 
     if 'thread_id' not in session:
         thread_id = initiate_interaction(message)
@@ -69,11 +71,10 @@ def handle_incoming_message():
         # Initializing final response
     final_response = None
     # del request.session[unique_id]
-    if "client" not in session:
+    if "openai_" not in session:
         my_thread_id = initiate_interaction(message)
         session["client"] = my_thread_id
     else:
-        
         my_thread_id = session.get("client")
         sendNewMessage_to_existing_thread(my_thread_id, message)
 
@@ -90,9 +91,11 @@ def handle_incoming_message():
             if queue_time == 15:
                 session.clear()
                 final_response = "Sorry I am having issues generating responses for queries now. Please wait for me to fix it."
+                queue_time+= 1
                 break
-            queue_time+= 1
+            
         elif run_status.status == "requires_action":
+            print("hello")
             # List to store all the call ids
             tools_outputs = []
             print(run_status.required_action.submit_tool_outputs)
@@ -114,7 +117,7 @@ def handle_incoming_message():
 
                     tools_outputs.append(tool_output)
 
-            run = client.beta.threads.runs.submit_tool_outputs(
+            run = openai_client.beta.threads.runs.submit_tool_outputs(
                 thread_id=my_thread_id,
                 run_id=run.id,
                 tool_outputs=tools_outputs
