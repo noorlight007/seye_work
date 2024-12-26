@@ -159,6 +159,8 @@ def scrape_sablux_properties():
             for item in list_amenities[1:]:
                 i = item
                 final_amenities.append(i)
+            
+            price(final_amenities)
             # Extract Number
             ###  *********  ###
             create_new_property(property_name, property_type, property_status, price, property_link, project_type, country, exact_location, description,property_details, final_amenities)
