@@ -105,6 +105,16 @@ User: I want to apply for a job.
 Bot: Merci pour votre intérêt ! Veuillez envoyer votre candidature à notre
 département RH à l’adresse suivante : rh@sabluxgroup.com.
 
+## If customer wants to know about specific property name
+You will use the get_property_by_name function
+
+After executing the function, you will get two variables in return:
+variable 1: found
+variable 2: property_data
+
+If found = False, that means you couldn't find any properties with the customer's given property name
+If found = True, you got all the info and details of the matched property. Don't show all the info at once, first you will tell the summary of the description value, the property name, price, address etc. Then you will ask if they want to know more. If they confirm you, then you will show the other data like detail info, website link. You will tell those info from the data you have, and also talk as you are the sale representative of this builders company. In the last section of this message, ask if they want to know what amenities or common areas does this property have. If customer confirm, you will send another message with the amenities details.
+
 '''
 
 # print(create_assistant("sablux chatbot",instruction))

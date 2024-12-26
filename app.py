@@ -14,6 +14,8 @@ from gpt_functions import *
 
 from utils import get_country_from_code
 
+from db_manage import *
+
 # from link_training import save_to_docx
 import json, time
 
@@ -92,6 +94,22 @@ def handle_incoming_message():
                         "output": json.dumps({"country":country_info}),
                     }
 
+                    tools_outputs.append(tool_output)
+                
+                if tool_call.function.name == "get_property_by_name":
+                    input_property_name = arguments['property_name']
+                    property_data = get_property_by_name(input_property_name)
+                    print(property_data)
+                    if property_data:
+                        tool_output={
+                            "tool_call_id": tool_call.id,
+                            "output": json.dumps({"found":True,"Property Data":property_data}),
+                        }
+                    else:
+                        tool_output={
+                            "tool_call_id": tool_call.id,
+                            "output": json.dumps({"found":False}),
+                        }
                     tools_outputs.append(tool_output)
 
             run = openai_client.beta.threads.runs.submit_tool_outputs(
