@@ -107,10 +107,10 @@ département RH à l’adresse suivante : rh@sabluxgroup.com.
 
 '''
 
-print(create_assistant("sablux chatbot",instruction))
+# print(create_assistant("sablux chatbot",instruction))
 # print(saveFile_intoOpenAI("FR - SABLUX HOLDING PRESENTATION INSTITUTIONNELLE_MAJ NOV 2024 (SCC)-1.pdf"))
 
 # print(create_vector_store("sablux store"))
 # print(upload_file_into_vector_store("vs_2FGD2Rc0YIl8VshvEfxUsOYi", ["file-3SR1ZyFuFoQwRxoSnTKNxz"]))
-# print(updateAssistantVectorDB("asst_zFx2EBwqfNFVhzLMgGQGrRZI", "vs_2FGD2Rc0YIl8VshvEfxUsOYi"))
+print(updateAssistantVectorDB("asst_Awo2TSxLXO75WGFEcWuHuTFm", "vs_2FGD2Rc0YIl8VshvEfxUsOYi"))
 # print(updateAssistantInstruction("asst_lUGfhLsfL4TvgPQrR1kVZkjh", instruction))
