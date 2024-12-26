@@ -95,7 +95,7 @@ def handle_incoming_message():
         elif run_status.status == "requires_action":
             # List to store all the call ids
             tools_outputs = []
-
+            print(run_status.required_action.submit_tool_outputs)
             for tool_call in run_status.required_action.submit_tool_outputs.tool_calls:  # Getting all the tool calls
                 # The returned parameter value of gpt functions
                 arguments = json.loads(tool_call.function.arguments)
