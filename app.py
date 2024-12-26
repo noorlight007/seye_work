@@ -79,7 +79,6 @@ def handle_incoming_message():
 
     run = trigger_assistant(my_thread_id, ASSISTANT_ID)
     
-    client = OpenAI(api_key=openAI_key)
     while True:
         run_status = checkRunStatus(my_thread_id , run.id)
         print(f"Run status: {run_status.status}")
@@ -115,11 +114,11 @@ def handle_incoming_message():
 
                     tools_outputs.append(tool_output)
 
-                run = client.beta.threads.runs.submit_tool_outputs(
-                    thread_id=my_thread_id,
-                    run_id=run.id,
-                    tool_outputs=tools_outputs
-                )
+            run = client.beta.threads.runs.submit_tool_outputs(
+                thread_id=my_thread_id,
+                run_id=run.id,
+                tool_outputs=tools_outputs
+            )
 
             
         elif run_status.status == "completed":
