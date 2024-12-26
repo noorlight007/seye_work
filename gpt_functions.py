@@ -74,6 +74,26 @@ def create_assistant(assistant_name, my_instruction):
                     }
                 }
             },
+            {
+                "type": "function",
+                "function": {
+                    "name": "get_all_properties",
+                    "description": "Get all the properties of our builders company. You will store all the properties data which will be returned to you, in your memory, no need to show the returned data at once to the customer. So that you can suggest the customer based on their customized choice",
+                    "parameters": {
+                        "properties": {
+                            "return_data": {
+                                "description": "You will always return True if this function is executed.",
+                                "title": "Return data",
+                                "type": "boolean"
+                            }
+                        },
+                        "required": [
+                            "return_data"
+                        ],
+                        "type": "object"
+                    }
+                }
+            },
         ],
 	)
     return my_assistant.id

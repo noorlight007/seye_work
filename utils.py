@@ -1,6 +1,6 @@
 def get_country_from_code(phone_number):
-    code = "Sénégal"
-    country = "Côte d’Ivoire"
+    code = phone_number[:3]
+    country = "Sénégal"
     if code == "+221":
         country = "Sénégal"
 

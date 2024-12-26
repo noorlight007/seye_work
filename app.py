@@ -32,7 +32,7 @@ auth_token = os.getenv('AUTH_TOKEN')
 phone_number = os.getenv('PHONE_NUMBER')
 twilio_client = Client(account_sid, auth_token)
 
-ASSISTANT_ID = "asst_Awo2TSxLXO75WGFEcWuHuTFm"
+ASSISTANT_ID = "asst_I2qyGzLxN1jjHhTZS925Ka9Q"
 
 from openai import OpenAI
 openAI_key = os.getenv('OPENAI_API')
@@ -88,6 +88,7 @@ def handle_incoming_message():
                 if tool_call.function.name == "check_which_country":
                     country_info = get_country_from_code(sender[9:])
                     print(country_info)
+                    session['country'] = country_info
 
                     tool_output={
                         "tool_call_id": tool_call.id,
@@ -111,6 +112,14 @@ def handle_incoming_message():
                             "output": json.dumps({"found":False}),
                         }
                     tools_outputs.append(tool_output)
+                
+                if tool_call.function.name == "get_all_properties":
+                    all_properties_data = get_properties_by_country(session.get("country"))
+                    tool_output={
+                            "tool_call_id": tool_call.id,
+                            "output": json.dumps({"all_properties_data":all_properties_data}),
+                        }
+
 
             run = openai_client.beta.threads.runs.submit_tool_outputs(
                 thread_id=my_thread_id,
