@@ -88,6 +88,8 @@ User: I want to apply for a job.
 Bot: Merci pour votre intérêt ! Veuillez envoyer votre candidature à notre
 département RH à l’adresse suivante : rh@sabluxgroup.com.
 
+7. For generating title, use *word/title* format.
+
 ## If customer wants to know about specific property name
 You will use the get_property_by_name function
 
@@ -133,5 +135,5 @@ Upon confirmation of the customer that want to explore a property, don't show al
 
 # print(create_vector_store("sablux store"))
 # print(upload_file_into_vector_store("vs_2FGD2Rc0YIl8VshvEfxUsOYi", ["file-3SR1ZyFuFoQwRxoSnTKNxz"]))
-print(updateAssistantVectorDB("asst_I2qyGzLxN1jjHhTZS925Ka9Q", "vs_2FGD2Rc0YIl8VshvEfxUsOYi"))
-# print(updateAssistantInstruction("asst_Awo2TSxLXO75WGFEcWuHuTFm", instruction))
+# print(updateAssistantVectorDB("asst_I2qyGzLxN1jjHhTZS925Ka9Q", "vs_2FGD2Rc0YIl8VshvEfxUsOYi"))
+print(updateAssistantInstruction("asst_I2qyGzLxN1jjHhTZS925Ka9Q", instruction))
