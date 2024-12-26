@@ -58,7 +58,7 @@ def create_assistant(assistant_name, my_instruction):
 	)
     return my_assistant.id
 
-def show_assistants(openAI_key):
+def show_assistants():
     client = OpenAI(api_key=openAI_key)
     my_updated_assistant = client.beta.assistants.list()
     return my_updated_assistant
