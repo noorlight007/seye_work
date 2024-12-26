@@ -8,8 +8,11 @@ from flask import Flask, request, session, render_template
 from flask_session import Session
 
 from twilio.rest import Client
+from openai import OpenAI
 
 from gpt_functions import *
+
+from utils import get_country_from_code
 
 # from link_training import save_to_docx
 import json, time
@@ -21,6 +24,7 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
+openAI_key = os.getenv('OPENAI_API')
 account_sid = os.getenv('ACCOUNT_SID')
 auth_token = os.getenv('AUTH_TOKEN')
 phone_number = os.getenv('PHONE_NUMBER')
@@ -62,12 +66,68 @@ def handle_incoming_message():
                 session.pop('thread_id', None)
                 break
             queue_time+= 1
+        # Initializing final response
+    final_response = None
+    # del request.session[unique_id]
+    if "client" not in session:
+        my_thread_id = initiate_interaction(message)
+        session["client"] = my_thread_id
+    else:
+        
+        my_thread_id = request.session.get("client")
+        sendNewMessage_to_existing_thread(my_thread_id, message)
+
+    run = trigger_assistant(my_thread_id, ASSISTANT_ID)
+    
+    client = OpenAI(api_key=openAI_key)
+    while True:
+        run_status = checkRunStatus(my_thread_id , run.id)
+        print(f"Run status: {run_status.status}")
+        queue_time = 1
+        if run_status.status == "failed":
+            final_response = "Sorry I am having issues generating responses for queries now. Please wait for me to fix it."
+            break
+        if run_status.status == "queued":
+            if queue_time == 15:
+                session.clear()
+                final_response = "Sorry I am having issues generating responses for queries now. Please wait for me to fix it."
+                break
+            queue_time+= 1
+        if run_status.status == "requires_action":
+            # List to store all the call ids
+            tools_outputs = []
+
+            for tool_call in run_status.required_action.submit_tool_outputs.tool_calls:  # Getting all the tool calls
+                # The returned parameter value of gpt functions
+                arguments = json.loads(tool_call.function.arguments)
+                print(f"Function: {tool_call.function.name}\nArgument variables: {arguments}")
+
+                arguments = json.loads(tool_call.function.arguments)
+
+                if tool_call.function.name == "check_which_country":
+                    country_info = get_country_from_code(sender[9:])
+                    print(country_info)
+
+                    tool_output={
+                        "tool_call_id": tool_call.id,
+                        "output": json.dumps({"country":country_info}),
+                    }
+
+                    tools_outputs.append(tool_output)
+
+                run = client.beta.threads.runs.submit_tool_outputs(
+                    thread_id=my_thread_id,
+                    run_id=run.id,
+                    tool_outputs=tools_outputs
+                )
+
+            
         if run_status.status == "completed":
             # Extract the bot's response
             final_response = retrieveResponse(thread_id)
             break
 
-        time.sleep(0.5)
+        time.sleep(1)
 
     print(final_response)
     # Remtion references

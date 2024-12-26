@@ -32,7 +32,15 @@ def create_assistant(assistant_name, my_instruction):
         description= "Virtual assistant of Sablux Holding company, a real state development company.",
         instructions = my_instruction,
         model="gpt-4o",
-        tools=[{"type": "file_search"},],
+        tools=[{"type": "file_search"},
+               {
+                "type": "function",
+                "function": {
+                    "name": "check_which_country",
+                    "description": "Whenever a customer sends first message in a thread, you will run this function to get the customer's country name",
+                }
+            }
+        ],
 	)
     return my_assistant.id
 

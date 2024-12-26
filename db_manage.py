@@ -20,7 +20,6 @@ class Property(Document):
     created_at = DateTimeField()
     updated_at = DateTimeField()
 
-
 def create_new_property(property_name, property_type, property_status, property_price, property_link, project_type, country_place, exact_location, description, property_details, amenities):
     check_existing = Property.objects(property_name = property_name).first()
     if check_existing:
@@ -45,20 +44,24 @@ def create_new_property(property_name, property_type, property_status, property_
     
         print(f"\nNew record has updated. Property name: {property_name}")
 
-
-def create_record(property_name, property_type, property_status, property_price, property_link, project_type):
-    create_new_record = Property(
-        property_name = property_name,
-        property_type = property_type,
-        property_status = property_status,
-        property_price = property_price,
-        property_link = property_link,
-        project_type = project_type,
-        created_at = datetime.now(),
-        updated_at = datetime.now()
-    )
-    create_new_record.save()
-
-    print(f"\nNew record has updated. Property name: {property_name}")
-
 # create_record("Kimia residences", "Villa", "En construction", "À partir de 160 Millions FCFA", "https://sabluximmobilier.com/programmes/residences-kimia/", "Résidences secondaires")
+
+def get_property_by_name(property_name):
+    property = Property.objects(property_name = property_name).first()
+    result = {"Property Name": property.property_name, "Property Type": property.property_type, "Property Status": property.property_status,
+              "Property Price": property.property_price, "Property Website link": property.property_link, "Country Place": property.country_place,
+              "Property Address": property.exact_location, "Description": property.description, "Detail info":property.property_details,
+              "Project Type": property.project_type, "Property Amenities": property.amenities}
+    return result
+
+# All properties of a country
+def get_properties_by_country(country):
+    properties = Property.objects(country_place = country)
+    results = []
+    for item in properties:
+        results.append({"Property Name": item.property_name, "Property Type": item.property_type, "Property Status": item.property_status,
+              "Property Price": item.property_price, "Property Website link": item.property_link, "Country Place": item.country_place,
+              "Property Address": item.exact_location, "Description": item.description, "Detail info":item.property_details,
+              "Project Type": item.project_type, "Property Amenities": item.amenities})
+    
+    return results
