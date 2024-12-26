@@ -71,8 +71,8 @@ def handle_incoming_message():
             if queue_time == 15:
                 session.clear()
                 final_response = "Sorry I am having issues generating responses for queries now. Please wait for me to fix it."
-                queue_time+= 1
                 break
+            queue_time+= 1
             
         elif run_status.status == "requires_action":
             print("hello")
