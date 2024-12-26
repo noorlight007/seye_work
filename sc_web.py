@@ -157,7 +157,10 @@ def scrape_sablux_properties():
                                 "Number of Apartments": number_of_apartments, "Property Lot Size": lot_size}
             final_amenities = []
             for item in list_amenities[1:]:
-                i = item
+                if "Caméra de sécurit" in item:
+                    i = item[:-1]
+                else:
+                    i = item
                 final_amenities.append(i)
             
             print(final_amenities)
