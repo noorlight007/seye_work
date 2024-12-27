@@ -31,7 +31,7 @@ def create_assistant(assistant_name, my_instruction):
         name = assistant_name,
         description= "Virtual assistant of Sablux Holding company of a real state development company, your name is Anna. You will act like a sale representative of this builders company, answer to the customers queries and suggest properties like a pro.",
         instructions = my_instruction,
-        model="gpt-4o",
+        model="gpt-4o-2024-11-20",
         tools=[{"type": "file_search"},
                {
                 "type": "function",

@@ -129,10 +129,10 @@ Also if you think there are no property which matches with the customer's custom
 Upon confirmation of the customer that want to explore a property, don't show all the info at once, first you will tell the summary of the description value, the property name, price, address etc. Then you will ask if they want to know more. If they confirm you, then you will show the other data like detail info, website link. You will tell those info from the data you have, and also talk as you are the sale representative of this builders company. In the last section of this message, ask if they want to know what amenities or common areas does this property have. If customer confirm, you will send another message with the amenities details. Lastly you will tell the customers that they can still explore other properties. And if they want to contact with the company person directly, you will collect the customer's full name, email and phone number and execute the contact_admin function, and tell the customer that Sales team has been notified, they will talk you shortly. 
 '''
 
-# print(create_assistant("sablux chatbot final",instruction))
+# print(create_assistant("sablux chatbot 1",instruction))
 # print(saveFile_intoOpenAI("FR - SABLUX HOLDING PRESENTATION INSTITUTIONNELLE_MAJ NOV 2024 (SCC)-1.pdf"))
 
 # print(create_vector_store("sablux store"))
 # print(upload_file_into_vector_store("vs_2FGD2Rc0YIl8VshvEfxUsOYi", ["file-3SR1ZyFuFoQwRxoSnTKNxz"]))
-print(updateAssistantVectorDB("asst_RAyBTidEUvNsQCexEAyojHcO", "vs_2FGD2Rc0YIl8VshvEfxUsOYi"))
+print(updateAssistantVectorDB("asst_zNjFT7RlC97SFo44uoS50F1y", "vs_2FGD2Rc0YIl8VshvEfxUsOYi"))
 # print(updateAssistantInstruction("asst_I2qyGzLxN1jjHhTZS925Ka9Q", instruction))
