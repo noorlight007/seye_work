@@ -50,6 +50,16 @@ def handle_incoming_message():
     profile_name = request.form.get('ProfileName')
     media_url = request.form.get('MediaUrl0')
     print(message)
+
+    if media_url:
+        message_created = twilio_client.messages.create(
+            from_= phone_number,
+            body= "Currently I can't read media files. Please continue with text messaging. Thank you!",
+            to= sender
+        )
+
+        return "okay", 200
+
     
     openai_client = OpenAI(api_key=openAI_key)
 
