@@ -38,6 +38,11 @@ ASSISTANT_ID = "asst_zNjFT7RlC97SFo44uoS50F1y"
 from openai import OpenAI
 openAI_key = os.getenv('OPENAI_API')
 
+
+@app.route('/dashboard', methods=['POST'])
+def index():
+    return render_template('index.html')
+
 @app.route('/whatsapp', methods=['POST'])
 def handle_incoming_message():
     message = request.form.get('Body')
