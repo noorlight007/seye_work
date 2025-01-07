@@ -39,7 +39,7 @@ from openai import OpenAI
 openAI_key = os.getenv('OPENAI_API')
 
 
-@app.route('/dashboard', methods=['POST'])
+@app.route('/', methods=['POST'])
 def index():
     return render_template('index.html')
 
