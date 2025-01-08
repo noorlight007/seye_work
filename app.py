@@ -15,6 +15,9 @@ from gpt_functions import *
 from utils import get_country_from_code
 
 from db_manage import *
+from db_contacts import *
+from db_message_history import *
+from db_quotes import *
 
 # from link_training import save_to_docx
 import json, time
@@ -38,18 +41,28 @@ ASSISTANT_ID = "asst_zNjFT7RlC97SFo44uoS50F1y"
 from openai import OpenAI
 openAI_key = os.getenv('OPENAI_API')
 
-
 @app.route('/', methods=['GET','POST'])
 def index():
     return render_template('index.html')
 
 @app.route('/whatsapp', methods=['POST'])
 def handle_incoming_message():
-    message = request.form.get('Body')
+    message = request.form.get('Body').strip()
     sender = request.form.get('From')
     profile_name = request.form.get('ProfileName')
     media_url = request.form.get('MediaUrl0')
     print(message)
+
+    # Managing the contacts
+    client_exist = check_if_contact_exist(sender[9:])
+    if client_exist == False:
+        client_exist = create_new_contact(profile_name , sender[9:])
+    
+    # Managing message history
+    if message == "":
+        message = "media message"
+    create_message_history(sender[9:], profile_name, "user", message)
+
 
     if media_url:
         message_created = twilio_client.messages.create(
@@ -141,6 +154,11 @@ def handle_incoming_message():
                     fullname = arguments['customer_name']
                     cell_number = arguments['phone_number']
                     email = arguments['email']
+
+                    # Creating a new quote in the database
+                    create_new_quote(fullname, sender[9:], cell_number, email)
+
+                    # Send Admin notification
                     twilio_client.messages.create(
                         from_= messaging_sid,
                         content_sid= "HX5df8d742b509e3cc10b187191c202a41",
@@ -149,6 +167,7 @@ def handle_incoming_message():
                                                        "3": email}),
                         to= "whatsapp:+8801301807991"  
                     )
+                    
                     tool_output={
                             "tool_call_id": tool_call.id,
                             "output": json.dumps({"inquiry_sent":True}),
