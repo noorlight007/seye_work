@@ -73,6 +73,7 @@ def message_history():
 app.route('/get_messages', methods=['POST'])
 def get_messages():
     whatsapp = request.json.get('whatsapp')
+    print(whatsapp)
     messages = get_messages_by_whatsApp(whatsapp)
     
     # Check if the last user message is more than 24 hours old
