@@ -118,7 +118,7 @@ def handle_incoming_message():
 
     # Managing the contacts
     client_exist = check_if_contact_exist(sender[9:])
-    if client_exist == False:
+    if not client_exist:
         client_exist = create_new_contact(profile_name , sender[9:])
     
     # Managing message history
