@@ -25,10 +25,11 @@
 
 <div class="card">
     <div class="row g-0">
+      <!-- Contact List -->
       <div class="col-12 col-lg-5 col-xl-3 border-end">
         <div class="card-header d-none d-md-block">
           <div class="input-icon">
-            <span class="input-icon-addon"> <!-- Download SVG icon from http://tabler-icons.io/i/search -->
+            <span class="input-icon-addon">
               <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" /></svg>
             </span>
             <input type="text" value="" class="form-control" placeholder="Search…" aria-label="Search" />
@@ -36,11 +37,13 @@
         </div>
         <div class="card-body p-0 scrollable" style="max-height: 35rem">
           <div class="nav flex-column nav-pills" role="tablist">
-
             {% for contact in all_contacts %}
-            <a href="#chat-1" class="nav-link text-start mw-100 p-3 active" id="chat-1-tab" data-bs-toggle="pill" role="tab" aria-selected="true">
+            <a href="javascript:void(0);" 
+               class="nav-link text-start mw-100 p-3" 
+               data-whatsapp="{{ contact.whatsapp }}">
               <div class="row align-items-center flex-fill">
-                <div class="col-auto"><span class="avatar">JL</span>
+                <div class="col-auto">
+                  <span class="avatar">JL</span>
                 </div>
                 <div class="col text-body">
                   <div>{{ contact.whatsapp }}</div>
@@ -52,57 +55,25 @@
           </div>
         </div>
       </div>
+  
+      <!-- Chat Section -->
       <div class="col-12 col-lg-7 col-xl-9 d-flex flex-column">
         <div class="card-body scrollable" style="height: 35rem">
           <div class="chat">
             <div class="chat-bubbles">
-                for each message item
-              <div class="chat-item">
-                <div class="row align-items-end justify-content-end"> if role = bot
-                  <div class="col col-lg-6">
-                    <div class="chat-bubble chat-bubble-me">
-                      <div class="chat-bubble-title">
-                        <div class="row">
-                          <div class="col chat-bubble-author">Bot</div>
-                          <div class="col-auto chat-bubble-date">Here message created_at value here</div>
-                        </div>
-                      </div>
-                      <div class="chat-bubble-body">
-                        <p>message_content value here</p>
-                      </div>
-                    </div>
-                  </div>
-                 
-                </div>
-              </div>
-              <div class="chat-item">
-                <div class="row align-items-end"> # If role = user
-                  
-                  <div class="col col-lg-6">
-                    <div class="chat-bubble">
-                      <div class="chat-bubble-title">
-                        <div class="row">
-                          <div class="col chat-bubble-author">contact_profile_name value here</div>  
-                          <div class="col-auto chat-bubble-date">Here message created_at value here</div>
-                        </div>
-                      </div>
-                      <div class="chat-bubble-body">
-                        <p>message_content value here</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              endfor
+              <!-- Chat bubbles will be dynamically inserted here -->
             </div>
           </div>
         </div>
         <div class="card-footer">
-          <div class="input-group input-group-flat">
-            <input type="text" class="form-control" id="write_message" autocomplete="off" placeholder="Type message" />
-            <span class="input-group-text">
-              <button class="btn btn-primary" id="send_message">Send</button>
-            </span>
+          <!-- Message Sending Section -->
+          <div id="footer-message-system">
+            <div class="input-group input-group-flat">
+              <input type="text" class="form-control" id="write_message" autocomplete="off" placeholder="Type message" />
+              <span class="input-group-text">
+                <button class="btn btn-primary" id="send_message">Send</button>
+              </span>
+            </div>
           </div>
         </div>
       </div>
