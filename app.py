@@ -56,7 +56,7 @@ def quotes():
     return render_template('contacts.html', all_quotes = all_quotes)
 
 @app.route('/message_history', methods=['GET','POST'])
-def quotes():
+def message_history():
     return render_template('message_history.html')
 
 @app.route('/whatsapp', methods=['POST'])
