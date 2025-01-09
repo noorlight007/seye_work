@@ -21,7 +21,7 @@
 
 {% block content_title %}
                 
-<div class="d-flex justify-content-end" id="auto_message_update" style="display: none;">
+<div class="d-flex justify-content-end" id="auto_message_update">
     <button class="btn btn-info" style="display: none;" id="stop_admin">Click to stop Admin Session</button>
 </div>
 
@@ -147,9 +147,9 @@
 
                 // Check and show the auto_message div if status is 'stop'
                 if (data.auto_message === 'stop') {
-                    document.getElementById('auto_message_update').style.display = 'block';
+                    document.getElementById('stop_admin').style.display = 'block';
                 } else {
-                    document.getElementById('auto_message_update').style.display = 'none';
+                    document.getElementById('stop_admin').style.display = 'none';
                 }
             });
         });
