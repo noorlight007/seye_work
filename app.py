@@ -50,6 +50,20 @@ def contacts():
     all_contacts = get_all_contacts()
     return render_template('contacts.html', all_contacts = all_contacts)
 
+@app.route('/get_contacts', methods=['GET'])
+def get_contacts():
+    contacts = get_all_contacts()
+    return jsonify({
+        "contacts": [
+            {
+                "profile_name": contact.profile_name,
+                "whatsapp": contact.whatsapp,
+            }
+            for contact in contacts
+        ]
+    })
+
+
 @app.route('/quotes-requests', methods=['GET','POST'])
 def quotes():
     all_quotes = get_all_quotes()
