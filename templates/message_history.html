@@ -158,7 +158,7 @@
     document.getElementById('stop_admin').addEventListener('click', function () {
         const chatBubbles = document.querySelector('.chat-bubbles');
         const whatsapp = chatBubbles.getAttribute('data-value');
-
+        console.log("we are here")
         if (whatsapp) {
             fetch('/update_auto_message', {
                 method: 'POST',
