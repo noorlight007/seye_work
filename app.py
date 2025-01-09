@@ -82,6 +82,8 @@ def get_messages():
         if time_diff > timedelta(hours=24):
             can_send_message = False
     
+    auto_message = check_auto_message_status(whatsapp)
+
     message_list = [
         {
             "role": msg.role,
@@ -92,14 +94,21 @@ def get_messages():
         for msg in messages
     ]
     
-    return jsonify({"messages": message_list, "can_send_message": can_send_message})
+    return jsonify({
+        "messages": message_list,
+        "can_send_message": can_send_message,
+        "auto_message": auto_message
+    })
 
 @app.route('/send_message', methods=['POST'])
 def send_message():
     data = request.json
     whatsapp = data.get('whatsapp')
-    message_content = data.get('message')
-    final_message = f'''*Admin*
+    message_content = data.get('message').strip()
+    if message_content.lower() == "exit" or message_content.lower() == "quit":
+        update_contact_auto_message(whatsapp, "active")
+    update_contact_auto_message(whatsapp, 'stop')
+    final_message = f'''~ *Admin* ~
     
 {message_content}'''
     twilio_client.messages.create(
@@ -111,6 +120,19 @@ def send_message():
     # Create new bot message
     
     return jsonify({"success": True})
+
+@app.route('/update_auto_message', methods=['POST'])
+def update_auto_message():
+    data = request.json
+    whatsapp = data.get('whatsapp')
+    status = data.get('status')
+
+    if whatsapp and status:
+        update_contact_auto_message(whatsapp, status)
+        return jsonify({"success": True, "message": "Auto message status updated successfully."})
+    else:
+        return jsonify({"success": False, "message": "Invalid data provided."}), 400
+
 
 
 
@@ -142,6 +164,9 @@ def handle_incoming_message():
             to= sender
         )
 
+        return "okay", 200
+    
+    if client_exist.auto_message == 'stop':
         return "okay", 200
 
     openai_client = OpenAI(api_key=openAI_key)

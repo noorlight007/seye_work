@@ -19,7 +19,13 @@
   <div>{{ admin_name }}</div>
 {% endblock %}
 
+{% block content_title %}
+                
+<div class="d-flex justify-content-end" id="auto_message_update" style="display: none;">
+    <button class="btn btn-info" id="stop_admin">Click to stop Admin Session</button>
+</div>
 
+{% endblock %}
 
 {% block main_content %}
 
@@ -88,7 +94,6 @@
     document.querySelectorAll('.nav-link').forEach(contact => {
         contact.addEventListener('click', function () {
             const whatsapp = this.querySelector('.col > div').innerText;
-            console.log(whatsapp);
 
             fetch('http://81.0.246.253:8000/get_messages', {
                 method: 'POST',
@@ -97,7 +102,6 @@
             })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
                 const chatBubbles = document.querySelector('.chat-bubbles');
 
                 // Set data-value attribute for the chat container
@@ -134,17 +138,45 @@
                 footer.innerHTML = data.can_send_message
                     ? `
                         <div class="input-group input-group-flat">
-                            <textarea class="form-control" id="write_message" rows="3"></textarea>
-
+                            <input type="text" class="form-control" id="write_message" autocomplete="off" placeholder="Type message" />
                             <span class="input-group-text">
                                 <button class="btn btn-primary" id="send_message">Send</button>
                             </span>
                         </div>`
                     : `<h3>Can't send message because WhatsApp API doesn't allow sending free-form messages after 24-hour session.</h3>`;
+
+                // Check and show the auto_message div if status is 'stop'
+                if (data.auto_message === 'stop') {
+                    document.getElementById('auto_message_update').style.display = 'block';
+                } else {
+                    document.getElementById('auto_message_update').style.display = 'none';
+                }
             });
         });
     });
+
+    document.getElementById('stop_admin').addEventListener('click', function () {
+        const chatBubbles = document.querySelector('.chat-bubbles');
+        const whatsapp = chatBubbles.getAttribute('data-value');
+
+        if (whatsapp) {
+            fetch('/update_auto_message', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ whatsapp: whatsapp, status: 'active' })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Hide the div
+                    document.getElementById('auto_message_update').style.display = 'none';
+                }
+            })
+            .catch(err => console.error('Error updating auto_message:', err));
+        }
+    });
 </script>
+
 
 
 <script>

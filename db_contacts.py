@@ -8,8 +8,10 @@ class Contacts(Document):
     id = SequenceField(primary_key = True)
     profile_name = StringField()  # Example: IM1 MARIA 
     whatsapp = StringField()
+    auto_message = StringField(default = 'active')
     created_at = DateTimeField()
     updated_at = DateTimeField()
+
 
 # Create a new contact
 def create_new_contact(profile_name, whatsapp):
@@ -33,5 +35,17 @@ def check_if_contact_exist(whatsapp):
 def get_all_contacts():
     contacts = Contacts.objects.order_by('-created_at')
     return contacts
-    
+
+def check_auto_message_status(whatsapp):
+    contact = Contacts.objects(whatsapp = whatsapp).first()
+    if contact:
+        return contact.auto_message
+    else:
+        return None
+
+def update_contact_auto_message(whatsapp, status):
+    contact = Contacts.objects(whatsapp = whatsapp).first()
+    if contact:
+        contact.auto_message = status
+        contact.save()
 
