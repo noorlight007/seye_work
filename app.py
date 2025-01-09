@@ -99,12 +99,15 @@ def send_message():
     data = request.json
     whatsapp = data.get('whatsapp')
     message_content = data.get('message')
+    final_message = f'''*Admin*
+    
+{message_content}'''
     twilio_client.messages.create(
         from_= messaging_sid,
         body= message_content,
         to= f"whatsapp:{whatsapp}"
     )
-    create_message_history(whatsapp, "bot","bot",message_content)
+    create_message_history(whatsapp, "bot","bot",message_content.replace('\\n','<br>'))
     # Create new bot message
     
     return jsonify({"success": True})
