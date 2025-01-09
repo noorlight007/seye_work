@@ -45,6 +45,20 @@ openAI_key = os.getenv('OPENAI_API')
 def index():
     return render_template('index.html')
 
+@app.route('/contacts', methods=['GET','POST'])
+def contacts():
+    all_contacts = get_all_contacts()
+    return render_template('contacts.html', all_contacts = all_contacts)
+
+@app.route('/quotes-requests', methods=['GET','POST'])
+def quotes():
+    all_quotes = get_all_quotes()
+    return render_template('contacts.html', all_quotes = all_quotes)
+
+@app.route('/message_history', methods=['GET','POST'])
+def quotes():
+    return render_template('message_history.html')
+
 @app.route('/whatsapp', methods=['POST'])
 def handle_incoming_message():
     message = request.form.get('Body').strip()
@@ -73,7 +87,6 @@ def handle_incoming_message():
 
         return "okay", 200
 
-    
     openai_client = OpenAI(api_key=openAI_key)
 
     # Initializing final response

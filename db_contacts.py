@@ -30,3 +30,8 @@ def check_if_contact_exist(whatsapp):
         return None
     
 
+def get_all_contacts():
+    contacts = Contacts.objects.order_by('-created_at')
+    return contacts
+    
+

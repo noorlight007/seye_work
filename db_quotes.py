@@ -34,3 +34,7 @@ def update_quote_status(client_whatsapp, new_status):
         return True
     else:
         return False
+
+def get_all_quotes():
+    quotes = Quotes.objects.order_by('-created_at')
+    return quotes
