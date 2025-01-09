@@ -70,9 +70,10 @@ def message_history():
 
 ######################    TESTING    ################################
 
-app.route('/get_messages', methods=['GET','POST'])
+@app.route('/get_messages', methods=['GET','POST'])
 def get_messages():
     whatsapp = request.json.get('whatsapp')
+    print("Hwew is the whatsapp")
     print(whatsapp)
     messages = get_messages_by_whatsApp(whatsapp)
     
