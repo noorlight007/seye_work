@@ -86,68 +86,77 @@
 
 <script>
     document.querySelectorAll('.nav-link').forEach(contact => {
-    contact.addEventListener('click', function () {
-        const whatsapp = this.querySelector('.col > div').innerText;
-        console.log(whatsapp)
+        contact.addEventListener('click', function () {
+            const whatsapp = this.querySelector('.col > div').innerText;
+            console.log(whatsapp);
 
-        fetch('http://81.0.246.253:8000/get_messages', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ whatsapp: whatsapp })
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data)
-            const chatBubbles = document.querySelector('.chat-bubbles');
-            chatBubbles.innerHTML = ''; // Clear previous messages
+            fetch('http://81.0.246.253:8000/get_messages', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ whatsapp: whatsapp })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                const chatBubbles = document.querySelector('.chat-bubbles');
 
-            data.messages.forEach(msg => {
-                const bubble = document.createElement('div');
-                bubble.className = `chat-item ${msg.role === 'bot' ? 'justify-content-end' : ''}`;
-                bubble.innerHTML = `
-                    <div class="row align-items-end ${msg.role === 'bot' ? 'justify-content-end' : ''}">
-                        <div class="col col-lg-6">
-                            <div class="chat-bubble ${msg.role === 'bot' ? 'chat-bubble-me' : ''}">
-                                <div class="chat-bubble-title">
-                                    <div class="row">
-                                        <div class="col chat-bubble-author">${msg.contact_name}</div>
-                                        <div class="col-auto chat-bubble-date">${msg.created_at}</div>
+                // Set data-value attribute for the chat container
+                chatBubbles.setAttribute('data-value', whatsapp);
+
+                // Clear previous messages
+                chatBubbles.innerHTML = '';
+
+                // Populate messages
+                data.messages.forEach(msg => {
+                    const bubble = document.createElement('div');
+                    bubble.className = `chat-item ${msg.role === 'bot' ? 'justify-content-end' : ''}`;
+                    bubble.innerHTML = `
+                        <div class="row align-items-end ${msg.role === 'bot' ? 'justify-content-end' : ''}">
+                            <div class="col col-lg-6">
+                                <div class="chat-bubble ${msg.role === 'bot' ? 'chat-bubble-me' : ''}">
+                                    <div class="chat-bubble-title">
+                                        <div class="row">
+                                            <div class="col chat-bubble-author">${msg.contact_name}</div>
+                                            <div class="col-auto chat-bubble-date">${msg.created_at}</div>
+                                        </div>
+                                    </div>
+                                    <div class="chat-bubble-body">
+                                        <p>${msg.content}</p>
                                     </div>
                                 </div>
-                                <div class="chat-bubble-body">
-                                    <p>${msg.content}</p>
-                                </div>
                             </div>
-                        </div>
-                    </div>`;
-                chatBubbles.appendChild(bubble);
-            });
+                        </div>`;
+                    chatBubbles.appendChild(bubble);
+                });
 
-            // Toggle message sending system
-            const footer = document.querySelector('.card-footer');
-            footer.innerHTML = data.can_send_message
-                ? `
-                    <div class="input-group input-group-flat">
-                        <input type="text" class="form-control" id="write_message" autocomplete="off" placeholder="Type message" />
-                        <span class="input-group-text">
-                            <button class="btn btn-primary" id="send_message">Send</button>
-                        </span>
-                    </div>`
-                : `<h3>Can't send message because WhatsApp API doesn't allow sending free-form messages after 24-hour session.</h3>`;
+                // Update footer with message sending system
+                const footer = document.querySelector('.card-footer');
+                footer.innerHTML = data.can_send_message
+                    ? `
+                        <div class="input-group input-group-flat">
+                            <input type="text" class="form-control" id="write_message" autocomplete="off" placeholder="Type message" />
+                            <span class="input-group-text">
+                                <button class="btn btn-primary" id="send_message">Send</button>
+                            </span>
+                        </div>`
+                    : `<h3>Can't send message because WhatsApp API doesn't allow sending free-form messages after 24-hour session.</h3>`;
+            });
         });
     });
-});
-
 </script>
+
 
 <script>
     document.addEventListener('click', function (e) {
         if (e.target && e.target.id === 'send_message') {
             const messageInput = document.getElementById('write_message');
             const message = messageInput.value.trim();
-            const whatsapp = document.querySelector('.nav-link.active .col > div:first-child').innerText;
 
-            if (message) {
+            // Retrieve the WhatsApp number from the data-value attribute
+            const chatBubbles = document.querySelector('.chat-bubbles');
+            const whatsapp = chatBubbles.getAttribute('data-value');
+
+            if (message && whatsapp) {
                 fetch('/send_message', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -156,8 +165,7 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        // Append the new bot message to the chat history
-                        const chatHistory = document.querySelector('#chat-bubbles');
+                        // Append the new user message to the chat history
                         const bubble = document.createElement('div');
                         bubble.className = 'chat-item justify-content-end';
                         bubble.innerHTML = `
@@ -166,7 +174,7 @@
                                     <div class="chat-bubble chat-bubble-me">
                                         <div class="chat-bubble-title">
                                             <div class="row">
-                                                <div class="col chat-bubble-author">Bot</div>
+                                                <div class="col chat-bubble-author">You</div>
                                                 <div class="col-auto chat-bubble-date">${new Date().toLocaleString()}</div>
                                             </div>
                                         </div>
@@ -176,12 +184,13 @@
                                     </div>
                                 </div>
                             </div>`;
-                        chatHistory.appendChild(bubble);
+                        chatBubbles.appendChild(bubble);
 
                         // Scroll to the bottom of the chat
-                        chatHistory.scrollTop = chatHistory.scrollHeight;
+                        chatBubbles.scrollTop = chatBubbles.scrollHeight;
 
-                        messageInput.value = ''; // Clear the input field
+                        // Clear the input field
+                        messageInput.value = '';
                     }
                 })
                 .catch(err => {
@@ -191,6 +200,7 @@
         }
     });
 </script>
+
 
 
 {% endblock %}
