@@ -4,7 +4,7 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-from flask import Flask, request, session, render_template
+from flask import Flask, request, session, render_template, jsonify
 from flask_session import Session
 
 from twilio.rest import Client
@@ -57,7 +57,56 @@ def quotes():
 
 @app.route('/message_history', methods=['GET','POST'])
 def message_history():
-    return render_template('message_history.html')
+    all_contacts = get_all_contacts()
+    return render_template('message_history.html' , all_contacts = all_contacts)
+
+# @app.route('/message_sending', methods=['GET','POST'])
+# def message_sending():
+#     message_content = ""
+#     client_whatsapp = ""
+#     # sends twilio whatsapp message to the client
+
+
+
+######################    TESTING    ################################
+
+app.route('/get_messages', methods=['POST'])
+def get_messages():
+    whatsapp = request.json.get('whatsapp')
+    messages = get_messages_by_whatsApp(whatsapp)
+    
+    # Check if the last user message is more than 24 hours old
+    can_send_message = True
+    if messages and messages[-1].role == 'user':
+        time_diff = datetime.now() - messages[-1].created_at
+        if time_diff > timedelta(hours=24):
+            can_send_message = False
+    
+    message_list = [
+        {
+            "role": msg.role,
+            "content": msg.message_content,
+            "created_at": msg.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+            "contact_name": msg.contact_profile_name,
+        }
+        for msg in messages
+    ]
+    
+    return jsonify({"messages": message_list, "can_send_message": can_send_message})
+
+@app.route('/send_message', methods=['POST'])
+def send_message():
+    data = request.json
+    whatsapp = data.get('whatsapp')
+    message_content = data.get('message')
+    create_message_history(whatsapp, "bot","bot",message_content)
+    # Create new bot message
+    
+    return jsonify({"success": True})
+
+
+
+#########################   END     ##############################
 
 @app.route('/whatsapp', methods=['POST'])
 def handle_incoming_message():

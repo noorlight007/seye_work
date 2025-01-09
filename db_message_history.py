@@ -23,3 +23,9 @@ def create_message_history(whatsappp, contact_profile_name, role, message_conten
         created_at = datetime.now()
     )
     new_message.save()
+
+
+
+def get_messages_by_whatsApp(whatsapp):
+    messages = Messages.objects(whatsappp=whatsapp).order_by('created_at')
+    return messages
