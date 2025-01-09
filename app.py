@@ -256,6 +256,7 @@ def handle_incoming_message():
     print(final_response)
     # Remtion references
     final_response = re.sub(r'【\d+:\d+†source】', '', final_response)
+    create_message_history(sender[9:], "bot", "bot", final_response)
     if len(final_response)>1600:
         partA = final_response[:1400]
         partB = final_response[1400:]
