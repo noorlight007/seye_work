@@ -134,7 +134,8 @@
                 footer.innerHTML = data.can_send_message
                     ? `
                         <div class="input-group input-group-flat">
-                            <input type="text" class="form-control" id="write_message" autocomplete="off" placeholder="Type message" />
+                            <textarea class="form-control" id="write_message" rows="3"></textarea>
+
                             <span class="input-group-text">
                                 <button class="btn btn-primary" id="send_message">Send</button>
                             </span>
