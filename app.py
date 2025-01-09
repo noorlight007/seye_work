@@ -107,7 +107,7 @@ def send_message():
         body= final_message,
         to= f"whatsapp:{whatsapp}"
     )
-    create_message_history(whatsapp, "bot","bot",final_message.replace('\\n','<br>'))
+    create_message_history(whatsapp, "bot","bot",message_content.replace('\\n','<br>'))
     # Create new bot message
     
     return jsonify({"success": True})
