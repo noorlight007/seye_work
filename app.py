@@ -104,7 +104,7 @@ def send_message():
 {message_content}'''
     twilio_client.messages.create(
         from_= messaging_sid,
-        body= message_content,
+        body= final_message,
         to= f"whatsapp:{whatsapp}"
     )
     create_message_history(whatsapp, "bot","bot",final_message.replace('\\n','<br>'))
