@@ -88,6 +88,7 @@
     document.querySelectorAll('.nav-link').forEach(contact => {
     contact.addEventListener('click', function () {
         const whatsapp = this.querySelector('.col > div').innerText;
+        console.log(whatsapp)
 
         fetch('http://81.0.246.253:8000/get_messages', {
             method: 'POST',
