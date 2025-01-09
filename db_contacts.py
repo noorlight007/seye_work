@@ -24,12 +24,20 @@ def create_new_contact(profile_name, whatsapp):
     new_contact.save()
 
 # If contact is exist
-def check_if_contact_exist(whatsapp):
+def check_if_contact_exist(whatsapp, profile_name):
     if_exist = Contacts.objects(whatsapp = whatsapp)
     if if_exist:
         return if_exist
     else:
-        return None
+        new_contact = Contacts(
+            profile_name = profile_name,
+            whatsapp = whatsapp,
+            created_at = datetime.now(),
+            updated_at = datetime.now()
+        )
+        new_contact.save()
+
+        return new_contact
     
 
 def get_all_contacts():
