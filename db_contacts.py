@@ -25,7 +25,7 @@ def create_new_contact(profile_name, whatsapp):
 
 # If contact is exist
 def check_if_contact_exist(whatsapp, profile_name):
-    if_exist = Contacts.objects(whatsapp = whatsapp)
+    if_exist = Contacts.objects(whatsapp = whatsapp).first()
     if if_exist:
         return if_exist
     else:
