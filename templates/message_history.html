@@ -89,7 +89,7 @@
     contact.addEventListener('click', function () {
         const whatsapp = this.querySelector('.col > div').innerText;
 
-        fetch('/get_messages', {
+        fetch('http://81.0.246.253:8000/get_messages', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ whatsapp: whatsapp })
