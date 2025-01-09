@@ -142,49 +142,55 @@
 
 <script>
     document.addEventListener('click', function (e) {
-    if (e.target && e.target.id === 'send_message') {
-        const messageInput = document.getElementById('write_message');
-        const message = messageInput.value.trim();
-        const whatsapp = document.querySelector('.nav-link.active .col > div').innerText;
+        if (e.target && e.target.id === 'send_message') {
+            const messageInput = document.getElementById('write_message');
+            const message = messageInput.value.trim();
+            const whatsapp = document.querySelector('.nav-link.active .col > div:first-child').innerText;
 
-        if (message) {
-            fetch('/send_message', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ whatsapp: whatsapp, message: message })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Append the new bot message to chat history
-                    const chatBubbles = document.querySelector('.chat-bubbles');
-                    const bubble = document.createElement('div');
-                    bubble.className = 'chat-item justify-content-end';
-                    bubble.innerHTML = `
-                        <div class="row align-items-end justify-content-end">
-                            <div class="col col-lg-6">
-                                <div class="chat-bubble chat-bubble-me">
-                                    <div class="chat-bubble-title">
-                                        <div class="row">
-                                            <div class="col chat-bubble-author">Bot</div>
-                                            <div class="col-auto chat-bubble-date">${new Date().toLocaleString()}</div>
+            if (message) {
+                fetch('/send_message', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ whatsapp: whatsapp, message: message })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Append the new bot message to the chat history
+                        const chatHistory = document.querySelector('#chat-bubbles');
+                        const bubble = document.createElement('div');
+                        bubble.className = 'chat-item justify-content-end';
+                        bubble.innerHTML = `
+                            <div class="row align-items-end justify-content-end">
+                                <div class="col col-lg-6">
+                                    <div class="chat-bubble chat-bubble-me">
+                                        <div class="chat-bubble-title">
+                                            <div class="row">
+                                                <div class="col chat-bubble-author">Bot</div>
+                                                <div class="col-auto chat-bubble-date">${new Date().toLocaleString()}</div>
+                                            </div>
+                                        </div>
+                                        <div class="chat-bubble-body">
+                                            <p>${message}</p>
                                         </div>
                                     </div>
-                                    <div class="chat-bubble-body">
-                                        <p>${message}</p>
-                                    </div>
                                 </div>
-                            </div>
-                        </div>`;
-                    chatBubbles.appendChild(bubble);
+                            </div>`;
+                        chatHistory.appendChild(bubble);
 
-                    messageInput.value = ''; // Clear the input field
-                }
-            });
+                        // Scroll to the bottom of the chat
+                        chatHistory.scrollTop = chatHistory.scrollHeight;
+
+                        messageInput.value = ''; // Clear the input field
+                    }
+                })
+                .catch(err => {
+                    console.error('Error sending message:', err);
+                });
+            }
         }
-    }
-});
-
+    });
 </script>
+
 
 {% endblock %}
