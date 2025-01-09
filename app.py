@@ -73,14 +73,12 @@ def message_history():
 @app.route('/get_messages', methods=['GET','POST'])
 def get_messages():
     whatsapp = request.json.get('whatsapp')
-    print("Hwew is the whatsapp")
-    print(whatsapp)
-    messages = get_messages_by_whatsApp(whatsapp)
+    messages, latest_message = get_messages_by_whatsApp(whatsapp)
     
     # Check if the last user message is more than 24 hours old
     can_send_message = True
-    if messages and messages[-1].role == 'user':
-        time_diff = datetime.now() - messages[-1].created_at
+    if latest_message and latest_message.role == 'user':
+        time_diff = datetime.now() - latest_message.created_at
         if time_diff > timedelta(hours=24):
             can_send_message = False
     

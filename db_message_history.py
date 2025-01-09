@@ -28,4 +28,5 @@ def create_message_history(whatsappp, contact_profile_name, role, message_conten
 
 def get_messages_by_whatsApp(whatsapp):
     messages = Messages.objects(whatsappp=whatsapp).order_by('created_at')
-    return messages
+    latest_message = Messages.objects(whatsappp=whatsapp).order_by('-created_at').first()
+    return messages, latest_message
