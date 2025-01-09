@@ -42,7 +42,7 @@
           </div>
         </div>
         <div class="card-body p-0 scrollable" style="max-height: 35rem">
-          <div class="nav flex-column nav-pills" role="tablist" id="contacts_list">
+          <div class="nav flex-column nav-pills" role="tablist">
             {% for contact in all_contacts %}
             <a href="javascript:void(0);" 
                class="nav-link text-start mw-100 p-3" 
@@ -91,103 +91,91 @@
 {% block js_content %}
 
 <script>
-    // Function to refresh contacts list
-    function refreshContacts() {
-        fetch('http://81.0.246.253:8000/get_contacts', {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' }
-        })
-        .then(response => response.json())
-        .then(data => {
-            const contactsList = document.getElementById('contacts_list');
-            contactsList.innerHTML = ''; // Clear current contacts
+    document.querySelectorAll('.nav-link').forEach(contact => {
+        contact.addEventListener('click', function () {
+            const whatsapp = this.querySelector('.col > div').innerText;
 
-            data.contacts.forEach(contact => {
-                const contactItem = document.createElement('li');
-                contactItem.className = 'nav-item';
-                contactItem.innerHTML = `
-                    <a class="nav-link" href="#" data-whatsapp="${contact.whatsapp}">
-                        <div class="row align-items-center">
-                            <div class="col-auto">
-                                <span class="avatar">${contact.profile_name[0]}</span>
-                            </div>
-                            <div class="col">
-                                <div>${contact.whatsapp}</div>
-                                <div>${contact.profile_name}</div>
-                                
-                            </div>
-                        </div>
-                    </a>`;
-                contactsList.appendChild(contactItem);
+            fetch('http://81.0.246.253:8000/get_messages', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ whatsapp: whatsapp })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const chatBubbles = document.querySelector('.chat-bubbles');
 
-                // Add click listener for contact selection
-                contactItem.querySelector('.nav-link').addEventListener('click', function () {
-                    const whatsapp = this.getAttribute('data-whatsapp');
-                    loadMessages(whatsapp);
-                });
-            });
-        });
-    }
+                // Set data-value attribute for the chat container
+                chatBubbles.setAttribute('data-value', whatsapp);
 
-    // Function to refresh messages for the active contact
-    function refreshMessages() {
-        const activeContact = document.querySelector('.nav-link.active');
-        if (activeContact) {
-            const whatsapp = activeContact.getAttribute('data-whatsapp');
-            loadMessages(whatsapp);
-        }
-    }
+                // Clear previous messages
+                chatBubbles.innerHTML = '';
 
-    // Function to load messages for a given WhatsApp number
-    function loadMessages(whatsapp) {
-        fetch('http://81.0.246.253:8000/get_messages', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ whatsapp: whatsapp })
-        })
-        .then(response => response.json())
-        .then(data => {
-            const chatBubbles = document.querySelector('.chat-bubbles');
-            chatBubbles.innerHTML = ''; // Clear previous messages
-
-            data.messages.forEach(msg => {
-                const bubble = document.createElement('div');
-                bubble.className = `chat-item ${msg.role === 'bot' ? 'justify-content-end' : ''}`;
-                bubble.innerHTML = `
-                    <div class="row align-items-end ${msg.role === 'bot' ? 'justify-content-end' : ''}">
-                        <div class="col col-lg-6">
-                            <div class="chat-bubble ${msg.role === 'bot' ? 'chat-bubble-me' : ''}">
-                                <div class="chat-bubble-title">
-                                    <div class="row">
-                                        <div class="col chat-bubble-author">${msg.contact_name}</div>
-                                        <div class="col-auto chat-bubble-date">${msg.created_at}</div>
+                // Populate messages
+                data.messages.forEach(msg => {
+                    const bubble = document.createElement('div');
+                    bubble.className = `chat-item ${msg.role === 'bot' ? 'justify-content-end' : ''}`;
+                    bubble.innerHTML = `
+                        <div class="row align-items-end ${msg.role === 'bot' ? 'justify-content-end' : ''}">
+                            <div class="col col-lg-6">
+                                <div class="chat-bubble ${msg.role === 'bot' ? 'chat-bubble-me' : ''}">
+                                    <div class="chat-bubble-title">
+                                        <div class="row">
+                                            <div class="col chat-bubble-author">${msg.contact_name}</div>
+                                            <div class="col-auto chat-bubble-date">${msg.created_at}</div>
+                                        </div>
+                                    </div>
+                                    <div class="chat-bubble-body">
+                                        <p>${msg.content}</p>
                                     </div>
                                 </div>
-                                <div class="chat-bubble-body">
-                                    <p>${msg.content}</p>
-                                </div>
                             </div>
-                        </div>
-                    </div>`;
-                chatBubbles.appendChild(bubble);
+                        </div>`;
+                    chatBubbles.appendChild(bubble);
+                });
+
+                // Update footer with message sending system
+                const footer = document.querySelector('.card-footer');
+                footer.innerHTML = data.can_send_message
+                    ? `
+                        <div class="input-group input-group-flat">
+                            <input type="text" class="form-control" id="write_message" autocomplete="off" placeholder="Type message" />
+                            <span class="input-group-text">
+                                <button class="btn btn-primary" id="send_message">Send</button>
+                            </span>
+                        </div>`
+                    : `<h3>Can't send message because WhatsApp API doesn't allow sending free-form messages after 24-hour session.</h3>`;
+
+                // Check and show the auto_message div if status is 'stop'
+                if (data.auto_message === 'stop') {
+                    document.getElementById('stop_admin').style.display = 'block';
+                } else {
+                    document.getElementById('stop_admin').style.display = 'none';
+                }
             });
-
-            // Update auto_message visibility
-            updateAutoMessageDiv(data.auto_message);
         });
-    }
+    });
 
-    // Function to update auto_message visibility
-    function updateAutoMessageDiv(autoMessageStatus) {
-        const autoMessageDiv = document.getElementById('auto_message_update');
-        autoMessageDiv.style.display = autoMessageStatus === 'stop' ? 'block' : 'none';
-    }
-
-    // Set intervals for refreshing contacts and messages
-    setInterval(refreshContacts, 2000); // Refresh contacts every 2 seconds
-    setInterval(refreshMessages, 2000); // Refresh messages for active contact every 2 seconds
+    document.getElementById('stop_admin').addEventListener('click', function () {
+        const chatBubbles = document.querySelector('.chat-bubbles');
+        const whatsapp = chatBubbles.getAttribute('data-value');
+        console.log("we are here")
+        if (whatsapp) {
+            fetch('/update_auto_message', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ whatsapp: whatsapp, status: 'active' })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Hide the div
+                    document.getElementById('stop_admin').style.display = 'none';
+                }
+            })
+            .catch(err => console.error('Error updating auto_message:', err));
+        }
+    });
 </script>
-
 
 
 
