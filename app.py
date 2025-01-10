@@ -73,7 +73,7 @@ def quotes():
     all_quotes = get_all_quotes()
     return render_template('contacts.html', all_quotes = all_quotes)
 
-@app.route('whatsapp/message_history', methods=['GET','POST'])
+@app.route('/whatsapp/message_history', methods=['GET','POST'])
 def message_history():
     all_contacts = get_all_contacts()
     return render_template('message_history.html' , all_contacts = all_contacts)
