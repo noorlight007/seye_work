@@ -11,15 +11,17 @@ class Quotes(Document):
     phone = StringField()
     email = StringField()
     status = StringField(default = "open")     # open , closed, unnecessary
+    source = StringField()    # whatsapp bot, insta bot, messenger bot
     created_at = DateTimeField()
 
 # create a new quote
-def create_new_quote(client_name, client_whatsapp, phone, email):
+def create_new_quote(client_name, client_whatsapp, phone, email, source):
     new_quote = Quotes(
         client_name = client_name,
         client_whatsapp = client_whatsapp,
         phone = phone, 
         email = email,
+        source = source,
         created_at = datetime.now()
     )
     new_quote.save()

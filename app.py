@@ -45,6 +45,10 @@ openAI_key = os.getenv('OPENAI_API')
 def index():
     return render_template('index.html')
 
+@app.route('/whatsapp_bot', methods=['GET','POST'])
+def whatsapp_bot():
+    return render_template('whatsapp_dashboard.html')
+
 @app.route('/contacts', methods=['GET','POST'])
 def contacts():
     all_contacts = get_all_contacts()
@@ -69,7 +73,7 @@ def quotes():
     all_quotes = get_all_quotes()
     return render_template('contacts.html', all_quotes = all_quotes)
 
-@app.route('/message_history', methods=['GET','POST'])
+@app.route('whatsapp/message_history', methods=['GET','POST'])
 def message_history():
     all_contacts = get_all_contacts()
     return render_template('message_history.html' , all_contacts = all_contacts)
@@ -263,7 +267,7 @@ def handle_incoming_message():
                     email = arguments['email']
 
                     # Creating a new quote in the database
-                    create_new_quote(fullname, sender[9:], cell_number, email)
+                    create_new_quote(fullname, sender[9:], cell_number, email, "WhatsApp chatbot")
 
                     # Send Admin notification
                     twilio_client.messages.create(
