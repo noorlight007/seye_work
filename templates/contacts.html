@@ -1,0 +1,70 @@
+<!-- loading the page from base.html -->
+{% extends 'base.html' %}
+
+{% block page_title %}
+
+    <title>Contacts - Sablux</title>
+
+{% endblock %}
+
+{% block style %}
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<style>
+  .apexcharts-radialbar-label {
+  cursor: pointer;
+}
+</style>
+{% endblock %}
+{% block admin_name %}
+  <div>{{ admin_name }}</div>
+{% endblock %}
+
+{% block content_title %}
+<div class="col">
+    <h2 class="page-title">
+        Dashboard
+    </h2>            
+</div>
+{% endblock %}
+
+{% block main_content %}
+
+<div class="col-12">
+    <div class="row row-cards">
+      <div class="col-sm-12 col-lg-6">
+        <div class="container container-fluid">
+          <div class="card card-link card-link-pop">
+            
+            <div class="card-body text-center">
+              <div class="card-title">
+                Total Locations
+              </div>
+              <strong>e</strong></div>
+          </div>
+        </div>
+        
+      </div>
+      <div class="col-sm-12 col-lg-6">
+        <div class="container container-fluid">
+          <div class="card card-link card-link-pop">
+            
+            <div class="card-body text-center">
+              <div class="card-title">
+                Total Properties
+              </div>
+              <strong>r</strong></div>
+          </div>
+        </div>
+        
+      </div>
+
+    </div>
+</div>
+
+{% endblock %}
+
+{% block js_content %}
+
+
+
+{% endblock %}
