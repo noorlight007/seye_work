@@ -22,8 +22,13 @@
 {% block content_title %}
 <div class="col">
     <h2 class="page-title">
-        Dashboard
+        WhatsApp Chatbot - Contacts
     </h2>            
+</div>
+<div class="col-md-2 ms-auto d-print-none">
+    <div class="d-flex">
+      <input type="text" id="all_search" class="form-control d-inline-block w-9 me-3 form-control-sm" placeholder="Search contacts.."/>
+    </div>
 </div>
 {% endblock %}
 
@@ -40,18 +45,13 @@
     <table class="table table-bordered table-hover">
         <thead class="table-light">
             <tr>
-                <th>Part Name</th>
-                <th>Quantity</th>
-                <th>Reason</th>
-                <th>Account Number</th>
-                <th>Unique ID</th>
-                <th>Added By</th>
-                <th>Credited</th>
-                <th>Created At</th>
-                <th></th>
+                <th>Profile name</th>
+                <th>WhatsApp number</th>
+                <th>Created at</th>
+                <th>Actions</th>
             </tr>
         </thead>
-        <tbody id="parts-table-body">
+        <tbody id="contacts-table-body">
             <!-- Rows will be populated here -->
         </tbody>
     </table>
