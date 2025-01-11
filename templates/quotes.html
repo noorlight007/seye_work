@@ -55,7 +55,6 @@
                     <th>Source</th>
                     <th>Status</th>
                     <th>Created at</th>
-                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody id="quotes-table-body">
@@ -113,33 +112,7 @@
                         <td>${quote.source}</td>
                         <td>${currentStatus}</td>
                         <td>${quote.created_at}</td>
-                        <td><a href="#" class="btn" data-bs-toggle="modal" data-bs-target="#modal-status-${quote.id}">
-                            Change Status
-                        </a></td>
-                        <div class="modal modal-blur fade" id="modal-status-${quote.id}" tabindex="-1" role="dialog" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                <h5 class="modal-title">Update Quote Status for <span class="badge bg-blue text-blue-fg">${quote.client_whatsapp}</span></h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="mb-3">
-                                        <div class="d-flex justify-content-center">
-                                            Current Status: ${currentStatus}
-                                        </div>
-                                    </div>
-                                <div class="mb-3">
-                                    <h5>${setDialogue}</h5>
-                                </div>
-                                </div>
-                                <div class="modal-footer">
-                                <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
-                                <button type="button" id='change_status_${quote.id}' class="btn btn-primary" data-bs-dismiss="modal">Update</button>
-                                </div>
-                            </div>
-                            </div>
-                        </div>
+                        
                         `;
                     
                     tableBody.appendChild(row);
@@ -172,54 +145,6 @@
         // Attach search input event listener
         document.getElementById("all_search").addEventListener("input", filterTable);
     });
-</script>
-
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-    // Attach event listener to dynamically loaded buttons
-    document.getElementById("quotes-table-body").addEventListener("click", function(event) {
-        if (event.target && event.target.id.startsWith("change_status_")) {
-            const buttonId = event.target.id;
-            const quoteId = buttonId.split("_").pop(); // Extract the quote ID from the button ID
-            
-            // Confirmation dialogue (optional)
-            const confirmAction = confirm("Are you sure you want to update the status?");
-            if (!confirmAction) return;
-
-            // Call the API to update the quote status
-            fetch(`/api/quotes/update_status/${quoteId}`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Update the status badge in the table row
-                    const row = document.querySelector(`#modal-status-${quoteId}`).closest("tr");
-                    const statusCell = row.querySelector("td:nth-child(7)"); // Assuming the status is in the 7th column
-                    
-                    // Update the status badge
-                    if (data.new_status === "open") {
-                        statusCell.innerHTML = '<span class="badge bg-azure text-azure-fg ms-2">Open</span>';
-                    } else {
-                        statusCell.innerHTML = '<span class="badge bg-teal text-teal-fg ms-2">Completed</span>';
-                    }
-                    
-                    alert("Quote status updated successfully!");
-                } else {
-                    alert("Failed to update quote status: " + data.message);
-                }
-            })
-            .catch(error => {
-                console.error("Error updating quote status:", error);
-                alert("An error occurred while updating the status.");
-            });
-        }
-    });
-});
-
 </script>
 
 
