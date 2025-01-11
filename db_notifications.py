@@ -35,3 +35,7 @@ def update_notification_seen(notification_id):
 def get_all_notifications():
     notifications = Notifications.objects.order_by('-created_at')
     return notifications
+
+
+def get_num_of_notifications():
+    return Notifications.objects.count()

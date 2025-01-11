@@ -30,3 +30,6 @@ def get_messages_by_whatsApp(whatsapp):
     messages = Messages.objects(whatsappp=whatsapp).order_by('created_at')
     latest_message = Messages.objects(whatsappp=whatsapp).order_by('-created_at').first()
     return messages, latest_message
+
+def get_num_of_messages():
+    return Messages.objects.count()

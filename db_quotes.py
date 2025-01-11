@@ -45,3 +45,6 @@ def update_quote_status(quote_id):
 def get_all_quotes():
     quotes = Quotes.objects.order_by('-created_at')
     return quotes
+
+def get_num_of_quotes():
+    return Quotes.objects.count()

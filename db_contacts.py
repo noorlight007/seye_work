@@ -57,3 +57,5 @@ def update_contact_auto_message(whatsapp, status):
         contact.auto_message = status
         contact.save()
 
+def get_num_of_contacts():
+    return Contacts.objects.count()
