@@ -24,9 +24,15 @@
   <div class="row align-items-center">
     <div class="col-auto"><span class="status-dot status-dot-animated bg-green d-block"></span></div>
     <div class="col text-truncate">
-      <a href="#" class="text-body d-block">New connect Request from {{ notification.user_whatsapp }}</a>
+      <a href="#" class="text-body d-block">New Client Request</a>
       <div class="d-block text-secondary text-truncate mt-n1">
-        Client Name: {{ notification.user_whatsapp }}, Request ID: {{ notification.condition.id }}
+        WhatsApp: {{ notification.user_whatsapp }}
+      </div>
+      <div class="d-block text-secondary text-truncate mt-n1">
+        Profile Name: {{ notification.user_profile_name }}
+      </div>
+      <div class="d-block text-secondary text-truncate mt-n1">
+        Request ID: {{ notification.condition.id }}
       </div>
     </div>
     <div class="col-auto">
