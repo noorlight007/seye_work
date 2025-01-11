@@ -20846,6 +20846,8 @@ Card note
   margin: 0;
   border: 0;
   box-shadow: none;
+  max-height: 300px;
+  overflow-y: auto;
 }
 
 .datagrid {
