@@ -66,6 +66,7 @@
     </div>
 </div>
 
+
 {% endblock %}
 
 {% block js_content %}
@@ -92,6 +93,16 @@
                 // Populate table rows with data
                 data.forEach(quote => {
                     console.log(quote.id)
+                    const status = quote.status
+                    let currentStatus;
+                    let setDialogue;
+                    if (status === 'open') {
+                        currentStatus = '<span class="badge bg-azure text-azure-fg ms-2">Open</span>';
+                        setDialogue = 'Do you really want to make it as completed?';
+                    } else if (status === 'closed'){
+                        currentStatus = '<span class="badge bg-teal text-teal-fg ms-2">Completed</span>';
+                        setDialogue = 'Do you really want to make it as Open?';
+                    }
                     const row = document.createElement("tr");
 
                     row.innerHTML = `
@@ -101,8 +112,35 @@
                         <td>${quote.phone}</td>
                         <td>${quote.email}</td>
                         <td>${quote.source}</td>
-                        <td>${quote.status}</td>
+                        <td>${currentStatus}</td>
                         <td>${quote.created_at}</td>
+                        <td><a href="#" class="btn" data-bs-toggle="modal" data-bs-target="#modal-status-${quote.id}">
+                            Change Status
+                        </a></td>
+                        <div class="modal modal-blur fade" id="modal-status-${quote.id}" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title">Update Quote Status</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <div class="d-flex justify-content-center">
+                                            Current Status: ${currentStatus}
+                                        </div>
+                                    </div>
+                                <div class="mb-3">
+                                    <h5>${setDialogue}</h5>
+                                </div>
+                                </div>
+                                <div class="modal-footer">
+                                <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
+                                <button type="button" id='change_status_${quote.id}' class="btn btn-primary" data-bs-dismiss="modal">Update</button>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
                         `;
                     
                     tableBody.appendChild(row);
