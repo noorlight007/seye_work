@@ -29,14 +29,18 @@ def create_new_quote(client_name, client_whatsapp, phone, email, source):
 
 
 # Update a quote status
-def update_quote_status(client_whatsapp, new_status):
-    quote = Quotes.objects(client_whatsapp = client_whatsapp).find()
+def update_quote_status(quote_id):
+    quote = Quotes.objects(id = quote_id).first()
     if quote:
-        quote.status = new_status
-        quote.save()
-        return True
+        if quote.status == "open":
+            quote.status = "closed"
+            quote.save()
+        else:
+            quote.status = "open"
+            quote.save()
+        return True, quote.status
     else:
-        return False
+        return False, False
 
 def get_all_quotes():
     quotes = Quotes.objects.order_by('-created_at')

@@ -92,6 +92,16 @@ def fetch_quotes():
     ]
     return jsonify(quotes_data)
 
+@app.route('/api/quotes/update_status/<int:quote_id>', methods=['POST'])
+def update_quote_status(quote_id):
+    result, new_status= update_quote_status(quote_id)
+    
+    if result:
+        return jsonify({"success": True, "new_status": new_status}), 200
+    else:
+        return jsonify({"success": False, "message": "Quote not found"}), 404
+
+
 @app.route('/whatsapp_bot/message_history', methods=['GET','POST'])
 def message_history():
     all_contacts = get_all_contacts()
