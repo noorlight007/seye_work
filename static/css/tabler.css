@@ -20841,8 +20841,6 @@ Card note
 
 .dropdown-menu-card {
   padding: 0;
-  max-height: 200px;
-  overflow-y: auto;
 }
 .dropdown-menu-card > .card {
   margin: 0;
