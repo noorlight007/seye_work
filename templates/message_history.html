@@ -38,7 +38,7 @@
             <span class="input-icon-addon">
               <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" /></svg>
             </span>
-            <input type="text" value="" class="form-control" placeholder="Search…" aria-label="Search" />
+            <input type="text" id="contact_search" class="form-control" placeholder="Search…" aria-label="Search" />
           </div>
         </div>
         <div class="card-body p-0 scrollable" style="max-height: 35rem">
@@ -234,6 +234,31 @@
     });
 </script>
 
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Get the search input and the container for the contact list
+    const searchInput = document.getElementById('contact_search');
+    const contactLinks = document.querySelectorAll('.nav-link');
+
+    // Add an input event listener to the search field
+    searchInput.addEventListener('input', function () {
+      const query = searchInput.value.toLowerCase();
+
+      // Loop through all contact links
+      contactLinks.forEach(contact => {
+        const whatsapp = contact.getAttribute('data-whatsapp') || '';
+        const profileName = contact.querySelector('.text-secondary')?.textContent || '';
+
+        // Check if the query matches the contact's WhatsApp or profile name
+        if (whatsapp.toLowerCase().includes(query) || profileName.toLowerCase().includes(query)) {
+          contact.style.display = ''; // Show matching contact
+        } else {
+          contact.style.display = 'none'; // Hide non-matching contact
+        }
+      });
+    });
+  });
+</script>
 
 
 {% endblock %}
