@@ -37,26 +37,26 @@
 
 <div class="col-12">
     <!-- Table -->
-<div class="table-container">
-    <div class="loading" id="loading" style="display: none;">
-        <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Loading...</span>
+    <div class="table-container">
+        <div class="loading" id="loading" style="display: none;">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
         </div>
+        <table class="table table-bordered table-hover">
+            <thead class="table-light">
+                <tr>
+                    <th>Profile name</th>
+                    <th>WhatsApp number</th>
+                    <th>Created at</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="contacts-table-body">
+                <!-- Rows will be populated here -->
+            </tbody>
+        </table>
     </div>
-    <table class="table table-bordered table-hover">
-        <thead class="table-light">
-            <tr>
-                <th>Profile name</th>
-                <th>WhatsApp number</th>
-                <th>Created at</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody id="contacts-table-body">
-            <!-- Rows will be populated here -->
-        </tbody>
-    </table>
-</div>
 </div>
 
 {% endblock %}

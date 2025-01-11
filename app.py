@@ -54,18 +54,19 @@ def contacts():
     all_contacts = get_all_contacts()
     return render_template('contacts.html', all_contacts = all_contacts)
 
-@app.route('/get_contacts', methods=['GET'])
-def get_contacts():
+
+@app.route('/api/contacts', methods=['GET'])
+def fetch_contacts():
     contacts = get_all_contacts()
-    return jsonify({
-        "contacts": [
-            {
-                "profile_name": contact.profile_name,
-                "whatsapp": contact.whatsapp,
-            }
-            for contact in contacts
-        ]
-    })
+    contacts_data = [
+        {
+            "profile_name": contact.profile_name,
+            "whatsapp": contact.whatsapp,
+            "created_at": contact.created_at.strftime('%Y-%m-%d %H:%M:%S') if contact.created_at else '',
+        }
+        for contact in contacts
+    ]
+    return jsonify(contacts_data)
 
 
 @app.route('/quotes-requests', methods=['GET','POST'])
