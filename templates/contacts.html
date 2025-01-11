@@ -50,7 +50,6 @@
                     <th>Profile name</th>
                     <th>WhatsApp number</th>
                     <th>Created at</th>
-                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody id="contacts-table-body">
@@ -91,10 +90,7 @@
                         <td>${contact.profile_name}</td>
                         <td>${contact.whatsapp}</td>
                         <td>${contact.created_at}</td>
-                        <td>
-                            <button class="btn btn-sm btn-primary">Edit</button>
-                            <button class="btn btn-sm btn-danger">Delete</button>
-                        </td>`;
+                        `;
                     
                     tableBody.appendChild(row);
                 });
