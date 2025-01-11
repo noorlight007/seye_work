@@ -17,7 +17,7 @@ class Quotes(Document):
 # create a new quote
 def create_new_quote(client_name, client_whatsapp, phone, email, source):
     new_quote = Quotes(
-        client_name = client_name,
+        client_full_name = client_name,
         client_whatsapp = client_whatsapp,
         phone = phone, 
         email = email,
