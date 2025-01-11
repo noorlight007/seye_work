@@ -20846,7 +20846,7 @@ Card note
   margin: 0;
   border: 0;
   box-shadow: none;
-  max-height: 300px;
+  max-height: 200px;
   overflow-y: auto;
 }
 
