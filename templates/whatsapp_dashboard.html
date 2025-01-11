@@ -3,7 +3,7 @@
 
 {% block page_title %}
 
-    <title>Dashboard - Seye</title>
+    <title>WhatsApp - Sablux</title>
 
 {% endblock %}
 
@@ -15,6 +15,35 @@
 }
 </style>
 {% endblock %}
+
+{% block notifications %}
+
+{% for notification in notifications %}
+
+<div class="list-group-item">
+  <div class="row align-items-center">
+    <div class="col-auto"><span class="status-dot status-dot-animated bg-green d-block"></span></div>
+    <div class="col text-truncate">
+      <a href="#" class="text-body d-block pe-3">New Client Request from WhatsApp bot </a>
+      <div class="d-block text-secondary text-truncate mt-n1">
+        WhatsApp: {{ notification.user_whatsapp }}
+      </div>
+      <div class="d-block text-secondary text-truncate mt-n1">
+        Profile Name: {{ notification.user_profile_name }}
+      </div>
+      <div class="d-block text-secondary text-truncate mt-n1">
+        Request ID: {{ notification.condition.id }}
+      </div>
+    </div>
+    
+    
+  </div>
+</div>
+
+{% endfor %}
+{% endblock %}
+
+
 {% block admin_name %}
   <div>{{ admin_name }}</div>
 {% endblock %}

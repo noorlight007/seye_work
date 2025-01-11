@@ -53,12 +53,13 @@ def index():
 
 @app.route('/whatsapp_bot', methods=['GET','POST'])
 def whatsapp_bot():
-    return render_template('whatsapp_dashboard.html')
+    notifications = get_all_notifications()
+    return render_template('whatsapp_dashboard.html', notifications = notifications)
 
 @app.route('/whatsapp_bot/contacts', methods=['GET','POST'])
 def contacts():
-    
-    return render_template('contacts.html')
+    notifications = get_all_notifications()
+    return render_template('contacts.html', notifications = notifications)
 
 
 @app.route('/api/contacts', methods=['GET'])
@@ -77,7 +78,8 @@ def fetch_contacts():
 
 @app.route('/quotes-requests', methods=['GET','POST'])
 def quotes():
-    return render_template('quotes.html')
+    notifications = get_all_notifications()
+    return render_template('quotes.html', notifications = notifications)
 
 @app.route('/api/quotes', methods=['GET'])
 def fetch_quotes():
@@ -110,7 +112,8 @@ def update_quote_status(quote_id):
 @app.route('/whatsapp_bot/message_history', methods=['GET','POST'])
 def message_history():
     all_contacts = get_all_contacts()
-    return render_template('message_history.html' , all_contacts = all_contacts)
+    notifications = get_all_notifications()
+    return render_template('message_history.html' , all_contacts = all_contacts, notifications = notifications)
 
 # @app.route('/message_sending', methods=['GET','POST'])
 # def message_sending():

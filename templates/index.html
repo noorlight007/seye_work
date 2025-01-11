@@ -3,7 +3,7 @@
 
 {% block page_title %}
 
-    <title>Dashboard - Seye</title>
+    <title>Dashboard - Sablux</title>
 
 {% endblock %}
 
@@ -61,7 +61,7 @@
     <div class="row row-cards">
       <div class="col-sm-12 col-lg-4">
         <div class="container container-fluid">
-          <a href="" class="card card-link card-link-pop">
+          <a href="{{ url_for('contacts') }}" class="card card-link card-link-pop">
             
             <div class="card-body text-center">
               <div class="card-title">
@@ -75,7 +75,7 @@
       </div>
       <div class="col-sm-12 col-lg-4">
         <div class="container container-fluid">
-          <a href="" class="card card-link card-link-pop">
+          <a href="{{ url_for('message_history') }}" class="card card-link card-link-pop">
             
             <div class="card-body text-center">
               <div class="card-title">
@@ -90,7 +90,7 @@
 
       <div class="col-sm-12 col-lg-4">
         <div class="container container-fluid">
-          <a href="" class="card card-link card-link-pop">
+          <a href="{{ url_for('quotes') }}" class="card card-link card-link-pop">
             
             <div class="card-body text-center">
               <div class="card-title">
