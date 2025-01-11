@@ -63,6 +63,70 @@
 
 {% block js_content %}
 
+<script>
+    // Function to fetch and display contacts
+    function loadContacts() {
+        const loadingIndicator = document.getElementById("loading");
+        const tableBody = document.getElementById("contacts-table-body");
+
+        // Show loading spinner
+        loadingIndicator.style.display = "block";
+
+        // Fetch contacts from the API
+        fetch('/api/contacts')
+            .then(response => response.json())
+            .then(data => {
+                // Hide loading spinner
+                loadingIndicator.style.display = "none";
+
+                // Clear the table body
+                tableBody.innerHTML = '';
+
+                // Populate table rows with data
+                data.forEach(contact => {
+                    const row = document.createElement("tr");
+
+                    row.innerHTML = `
+                        <td>${contact.profile_name}</td>
+                        <td>${contact.whatsapp}</td>
+                        <td>${contact.created_at}</td>
+                        <td>
+                            <button class="btn btn-sm btn-primary">Edit</button>
+                            <button class="btn btn-sm btn-danger">Delete</button>
+                        </td>`;
+                    
+                    tableBody.appendChild(row);
+                });
+            })
+            .catch(error => {
+                // Hide loading spinner on error
+                loadingIndicator.style.display = "none";
+                console.error("Error fetching contacts:", error);
+            });
+    }
+
+    // Function to filter table rows based on search input
+    function filterTable() {
+        const searchInput = document.getElementById("all_search").value.toLowerCase();
+        const tableRows = document.querySelectorAll("#contacts-table-body tr");
+
+        tableRows.forEach(row => {
+            const cells = Array.from(row.children);
+            const matches = cells.some(cell => cell.textContent.toLowerCase().includes(searchInput));
+            row.style.display = matches ? "" : "none";
+        });
+    }
+
+    // Attach event listeners on DOMContentLoaded
+    document.addEventListener("DOMContentLoaded", () => {
+        // Load contacts once the DOM is fully loaded
+        loadContacts();
+
+        // Attach search input event listener
+        document.getElementById("all_search").addEventListener("input", filterTable);
+    });
+</script>
+
 
 
 {% endblock %}
