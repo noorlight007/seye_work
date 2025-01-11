@@ -25,6 +25,7 @@ def create_new_quote(client_name, client_whatsapp, phone, email, source):
         created_at = datetime.now()
     )
     new_quote.save()
+    return new_quote.id
 
 
 # Update a quote status

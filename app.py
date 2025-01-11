@@ -18,6 +18,7 @@ from db_manage import *
 from db_contacts import *
 from db_message_history import *
 from db_quotes import *
+from db_notifications import *
 
 # from link_training import save_to_docx
 import json, time
@@ -51,8 +52,8 @@ def whatsapp_bot():
 
 @app.route('/whatsapp_bot/contacts', methods=['GET','POST'])
 def contacts():
-    all_contacts = get_all_contacts()
-    return render_template('contacts.html', all_contacts = all_contacts)
+    
+    return render_template('contacts.html')
 
 
 @app.route('/api/contacts', methods=['GET'])
@@ -71,8 +72,25 @@ def fetch_contacts():
 
 @app.route('/quotes-requests', methods=['GET','POST'])
 def quotes():
-    all_quotes = get_all_quotes()
-    return render_template('contacts.html', all_quotes = all_quotes)
+    return render_template('quotes.html')
+
+@app.route('/api/quotes', methods=['GET'])
+def fetch_quotes():
+    quotes = get_all_quotes()
+    quotes_data = [
+        {
+            "id": quote.id,
+            "client_full_name": quote.client_full_name,
+            "client_whatsapp": quote.client_whatsapp,
+            "phone":quote.phone,
+            "email": quote.email,
+            "source": quote.source,
+            "status": quote.status,
+            "created_at": quote.created_at.strftime('%Y-%m-%d %H:%M:%S') if quote.created_at else '',
+        }
+        for quote in quotes
+    ]
+    return jsonify(quotes_data)
 
 @app.route('/whatsapp_bot/message_history', methods=['GET','POST'])
 def message_history():
@@ -268,7 +286,8 @@ def handle_incoming_message():
                     email = arguments['email']
 
                     # Creating a new quote in the database
-                    create_new_quote(fullname, sender[9:], cell_number, email, "WhatsApp chatbot")
+                    quote_id = create_new_quote(fullname, sender[9:], cell_number, email, "WhatsApp chatbot")
+                    create_notification(sender[9:], profile_name, {"name": "query", "id": quote_id})
 
                     # Send Admin notification
                     twilio_client.messages.create(
