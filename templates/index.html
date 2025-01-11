@@ -15,6 +15,27 @@
 }
 </style>
 {% endblock %}
+
+{% block notifications %}
+<div class="list-group-item">
+  <div class="row align-items-center">
+    <div class="col-auto"><span class="status-dot status-dot-animated bg-green d-block"></span></div>
+    <div class="col text-truncate">
+      <a href="#" class="text-body d-block">New connect Request from {{ notificaton.user_whatsapp }}</a>
+      <div class="d-block text-secondary text-truncate mt-n1">
+        Client Name: {{ notificaton.user_whatsapp }}, Request ID: {{ notificaton.condition.id }}
+      </div>
+    </div>
+    
+  </div>
+</div>
+{% for notification in notifications %}
+
+
+
+{% endfor %}
+{% endblock %}
+
 {% block admin_name %}
   <div>{{ admin_name }}</div>
 {% endblock %}

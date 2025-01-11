@@ -44,7 +44,8 @@ openAI_key = os.getenv('OPENAI_API')
 
 @app.route('/', methods=['GET','POST'])
 def index():
-    return render_template('index.html')
+    notifications = get_all_notifications()
+    return render_template('index.html', notifications = notifications)
 
 @app.route('/whatsapp_bot', methods=['GET','POST'])
 def whatsapp_bot():

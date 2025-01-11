@@ -24,10 +24,14 @@ def create_notification(user_whatsapp, user_profile_name, condition):
     new_notification.save()
     return new_notification
 
-def update_notification_seen(notification_id, seen):
-    result = Notifications.objects(id=notification_id).update_one(set__seen=seen)
+def update_notification_seen(notification_id):
+    result = Notifications.objects(id=notification_id).update_one(set__seen="yes")
 
     if result == 0:
         print("No notification found with the given ID.")
     else:
         print("Notification status changed.")
+
+def get_all_notifications():
+    notifications = Notifications.objects.order_by('-created_at')
+    return notifications
