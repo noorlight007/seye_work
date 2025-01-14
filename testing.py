@@ -1,8 +1,7 @@
 from twilio.rest import Client
 from twilio.base.exceptions import TwilioRestException, TwilioException
 
-# TWILIO_ACCOUNT_SID = 'AC477fbb2103f52a03c0bcdc8580ebebc8'
-# TWILIO_AUTH_TOKEN = 'eb31fdf55378f6d14ceacd90bb97a5a4'
+
 
 # twilio_client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
 # print(twilio_client.ser)
